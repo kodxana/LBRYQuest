@@ -1,16 +1,16 @@
-package com.satoshiquest.satoshiquest.commands;
+package com.lbryquest.lbryquest.commands;
 
-import com.satoshiquest.satoshiquest.SatoshiQuest;
+import com.lbryquest.lbryquest.LBRYQuest;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class MOTDCommand extends CommandAction {
-  private SatoshiQuest satoshiQuest;
+  private LBRYQuest lbryQuest;
 
-  public MOTDCommand(SatoshiQuest plugin) {
-    this.satoshiQuest = plugin;
+  public MOTDCommand(LBRYQuest plugin) {
+    this.lbryQuest = plugin;
   }
 
   public boolean run(
@@ -22,7 +22,7 @@ public class MOTDCommand extends CommandAction {
       player.sendMessage("Please use only aplhanumeric characters.");
       return false;
     } else {
-      satoshiQuest.REDIS.set("satoshiquest:motd", args[0]);
+      lbryQuest.REDIS.set("satoshiquest:motd", args[0]);
       player.sendMessage(ChatColor.GREEN + "Message changed.");
       return true;
     }

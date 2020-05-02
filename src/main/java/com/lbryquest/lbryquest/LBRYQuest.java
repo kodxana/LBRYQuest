@@ -1,17 +1,18 @@
 //bitcoinjake09 11/9/2019 - a bitcoin tressure hunt in minecraft - satoshiquest
-package com.satoshiquest.satoshiquest;
+package com.lbryquest.lbryquest;
 
-import com.satoshiquest.satoshiquest.commands.*;
-import com.satoshiquest.satoshiquest.events.*;
-import com.google.gson.JsonObject;
+import com.lbryquest.lbryquest.commands.*;
+import com.lbryquest.lbryquest.events.EntityEvents;
+import com.lbryquest.lbryquest.events.ServerEvents;
+import com.lbryquest.lbryquest.commands.*;
+import com.lbryquest.lbryquest.events.*;
+
 import java.io.*;
 import java.net.*;
-import java.sql.DriverManager;
 import java.text.ParseException;
 import java.text.*;
 import java.util.*;
 import java.math.BigDecimal;
-import java.util.concurrent.TimeUnit;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -30,16 +31,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import redis.clients.jedis.Jedis;
 import org.bukkit.block.Block;
-import org.bukkit.material.*;
 import org.bukkit.Material;
-import org.bukkit.material.MaterialData;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.Attachable;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.advancement.*;
 
@@ -48,16 +42,16 @@ import org.bukkit.advancement.*;
 // DARK_BLUE UNDERLINE : Link, RED : Server error, DARK_RED : User error, GRAY : Info, DARK_GRAY :
 // Clan, DARK_GREEN : Landname
 
-public class SatoshiQuest extends JavaPlugin {
+public class LBRYQuest extends JavaPlugin {
   // TODO: remove env variables not being used anymore
   // Connecting to REDIS
   // Links to the administration account via Environment Variables
   public static final String SATOSHIQUEST_ENV =
       System.getenv("SATOSHIQUEST_ENV") != null ? System.getenv("SATOSHIQUEST_ENV") : "development";
   public static final UUID ADMIN_UUID =
-      System.getenv("ADMIN_UUID") != null ? UUID.fromString(System.getenv("ADMIN_UUID")) : null;
+      System.getenv("ADMIN_UUID") != null ? UUID.fromString(System.getenv("ADMIN_UUID")) : UUID.fromString("dbf871e1-e8f5-42de-82f1-995979d855ac");
  public static final String ADMIN_ADDRESS =
-      System.getenv("ADMIN_ADDRESS") != null ? System.getenv("ADMIN_ADDRESS"): "1SatQHUuD7WVCT16cuNd35udrxr9q6GNY";
+      System.getenv("ADMIN_ADDRESS") != null ? System.getenv("ADMIN_ADDRESS"): "bTsHn8MhMgjTrTg1onvKrNHa5LethWQm3g";
  public static final String ADMIN2_ADDRESS =
       System.getenv("ADMIN2_ADDRESS") != null ? System.getenv("ADMIN2_ADDRESS"): "noSet";
   public static final String BITCOIN_NODE_HOST =
@@ -67,15 +61,15 @@ public class SatoshiQuest extends JavaPlugin {
   public static final int BITCOIN_NODE_PORT =
       System.getenv("BITCOIN_PORT_8332_TCP_PORT") != null
           ? Integer.parseInt(System.getenv("BITCOIN_PORT_8332_TCP_PORT"))
-          : 8332;
+          : 9245;
   public static final String SERVERDISPLAY_NAME =
-      System.getenv("SERVERDISPLAY_NAME") != null ? System.getenv("SERVERDISPLAY_NAME") : "SatoshiQuest";
+      System.getenv("SERVERDISPLAY_NAME") != null ? System.getenv("SERVERDISPLAY_NAME") : "LBRYQuest";
   public static final Long DENOMINATION_FACTOR =
       System.getenv("DENOMINATION_FACTOR") != null
           ? Long.parseLong(System.getenv("DENOMINATION_FACTOR"))
           : 1L;
   public static final String DENOMINATION_NAME =
-      System.getenv("DENOMINATION_NAME") != null ? System.getenv("DENOMINATION_NAME") : "Sats";
+      System.getenv("DENOMINATION_NAME") != null ? System.getenv("DENOMINATION_NAME") : "LBC";
   public static final String BITCOIN_NODE_USERNAME = System.getenv("BITCOIN_ENV_USERNAME");
   public static final String BITCOIN_NODE_PASSWORD = System.getenv("BITCOIN_ENV_PASSWORD");
   public static final String DISCORD_HOOK_URL = System.getenv("DISCORD_HOOK_URL");
@@ -85,19 +79,19 @@ public class SatoshiQuest extends JavaPlugin {
           System.getenv("MINER_FEE") != null ? Long.parseLong(System.getenv("MINER_FEE")) : 2.4;
 
   public static final String SERVER_NAME =
-      System.getenv("SERVER_NAME") != null ? System.getenv("SERVER_NAME") : "SatoshiQuest";
+      System.getenv("SERVER_NAME") != null ? System.getenv("SERVER_NAME") : "LBRYQuest";
 
   public static final String ADDRESS_URL =
-      System.getenv("ADDRESS_URL") != null ? System.getenv("ADDRESS_URL") : "https://www.blockchain.com/btc/address/";
+      System.getenv("ADDRESS_URL") != null ? System.getenv("ADDRESS_URL") : "https://explorer.lbry.com/address/";
 
   public static final String TX_URL =
-      System.getenv("TX_URL") != null ? System.getenv("TX_URL") : "https://www.blockchain.com/btc/tx/";
+      System.getenv("TX_URL") != null ? System.getenv("TX_URL") : "https://explorer.lbry.com/tx/";
 
   public static final String SERVER_WEBSITE =
-      System.getenv("SERVER_WEBSITE") != null ? System.getenv("SERVER_WEBSITE") : "http://AllAboutBTC.com/SatoshiQuest.html";
+      System.getenv("SERVER_WEBSITE") != null ? System.getenv("SERVER_WEBSITE") : "";
 //https://www.cryptonator.com/api/currencies
   public static final String COINGECKO_CRYPTO =
-      System.getenv("COINGECKO_CRYPTO") != null ? System.getenv("COINGECKO_CRYPTO") : "btc";
+      System.getenv("COINGECKO_CRYPTO") != null ? System.getenv("COINGECKO_CRYPTO") : "lbry-credits";
 
   // REDIS: Look for Environment variables on hostname and port, otherwise defaults to
   // localhost:6379
@@ -426,10 +420,10 @@ REDIS.set("LOOT_RADIUS_MAX",Long.toString((long)Math.round((Double.valueOf(REDIS
     //System.out.println(params);
     jsonObject.put("params", params);
     //System.out.println("Checking blockchain info...");
-    URL url = new URL("http://" + SatoshiQuest.BITCOIN_NODE_HOST + ":" + SatoshiQuest.BITCOIN_NODE_PORT);
+    URL url = new URL("http://" + LBRYQuest.BITCOIN_NODE_HOST + ":" + LBRYQuest.BITCOIN_NODE_PORT);
     //System.out.println(url.toString());
     HttpURLConnection con = (HttpURLConnection) url.openConnection();
-    String userPassword = SatoshiQuest.BITCOIN_NODE_USERNAME + ":" + SatoshiQuest.BITCOIN_NODE_PASSWORD;
+    String userPassword = LBRYQuest.BITCOIN_NODE_USERNAME + ":" + LBRYQuest.BITCOIN_NODE_PASSWORD;
     String encoding = Base64.getEncoder().encodeToString(userPassword.getBytes());
     con.setRequestProperty("Authorization", "Basic " + encoding);
 
@@ -486,10 +480,10 @@ REDIS.set("LOOT_RADIUS_MAX",Long.toString((long)Math.round((Double.valueOf(REDIS
         JSONArray params = new JSONArray();
         //System.out.println(params);
         jsonObject.put("params", params);
-        URL url = new URL("http://" + SatoshiQuest.BITCOIN_NODE_HOST + ":" + SatoshiQuest.BITCOIN_NODE_PORT+ "/wallet/");
+        URL url = new URL("http://" + LBRYQuest.BITCOIN_NODE_HOST + ":" + LBRYQuest.BITCOIN_NODE_PORT+ "/wallet/");
         //System.out.println(url.toString());
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        String userPassword = SatoshiQuest.BITCOIN_NODE_USERNAME + ":" + SatoshiQuest.BITCOIN_NODE_PASSWORD;
+        String userPassword = LBRYQuest.BITCOIN_NODE_USERNAME + ":" + LBRYQuest.BITCOIN_NODE_PASSWORD;
         String encoding = Base64.getEncoder().encodeToString(userPassword.getBytes());
         con.setRequestProperty("Authorization", "Basic " + encoding);
 
@@ -544,10 +538,10 @@ REDIS.set("LOOT_RADIUS_MAX",Long.toString((long)Math.round((Double.valueOf(REDIS
         JSONArray params = new JSONArray();
         //System.out.println(params);
         jsonObject.put("params", params);
-        URL url = new URL("http://" + SatoshiQuest.BITCOIN_NODE_HOST + ":" + SatoshiQuest.BITCOIN_NODE_PORT + "/wallet/" + account_id);
+        URL url = new URL("http://" + LBRYQuest.BITCOIN_NODE_HOST + ":" + LBRYQuest.BITCOIN_NODE_PORT + "/wallet/" + account_id);
         //System.out.println(url.toString());
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        String userPassword = SatoshiQuest.BITCOIN_NODE_USERNAME + ":" + SatoshiQuest.BITCOIN_NODE_PASSWORD;
+        String userPassword = LBRYQuest.BITCOIN_NODE_USERNAME + ":" + LBRYQuest.BITCOIN_NODE_PASSWORD;
         String encoding = Base64.getEncoder().encodeToString(userPassword.getBytes());
         con.setRequestProperty("Authorization", "Basic " + encoding);
 
@@ -607,12 +601,12 @@ REDIS.set("LOOT_RADIUS_MAX",Long.toString((long)Math.round((Double.valueOf(REDIS
     //System.out.println(params);
     jsonObject.put("params", params);
     //System.out.println("Checking blockchain info...");
-    URL url = new URL("http://" + SatoshiQuest.BITCOIN_NODE_HOST + ":" + SatoshiQuest.BITCOIN_NODE_PORT + "/wallet/");
+    URL url = new URL("http://" + LBRYQuest.BITCOIN_NODE_HOST + ":" + LBRYQuest.BITCOIN_NODE_PORT + "/wallet/");
     //System.out.println(url.toString());
     //System.out.println(jsonObject.toString());
 
       HttpURLConnection con = (HttpURLConnection) url.openConnection();
-    String userPassword = SatoshiQuest.BITCOIN_NODE_USERNAME + ":" + SatoshiQuest.BITCOIN_NODE_PASSWORD;
+    String userPassword = LBRYQuest.BITCOIN_NODE_USERNAME + ":" + LBRYQuest.BITCOIN_NODE_PASSWORD;
     String encoding = Base64.getEncoder().encodeToString(userPassword.getBytes());
     con.setRequestProperty("Authorization", "Basic " + encoding);
 
@@ -734,10 +728,10 @@ REDIS.set("LOOT_RADIUS_MAX",Long.toString((long)Math.round((Double.valueOf(REDIS
 	params.add(confirmations);
         //System.out.println("Parms: " + params);
         jsonObject.put("params", params);
-        URL url = new URL("http://" + SatoshiQuest.BITCOIN_NODE_HOST + ":" + SatoshiQuest.BITCOIN_NODE_PORT + "/wallet/" + account_id);
+        URL url = new URL("http://" + LBRYQuest.BITCOIN_NODE_HOST + ":" + LBRYQuest.BITCOIN_NODE_PORT + "/wallet/" + account_id);
         //System.out.println(url.toString());
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        String userPassword = SatoshiQuest.BITCOIN_NODE_USERNAME + ":" + SatoshiQuest.BITCOIN_NODE_PASSWORD;
+        String userPassword = LBRYQuest.BITCOIN_NODE_USERNAME + ":" + LBRYQuest.BITCOIN_NODE_PASSWORD;
         String encoding = Base64.getEncoder().encodeToString(userPassword.getBytes());
         con.setRequestProperty("Authorization", "Basic " + encoding);
 
@@ -762,7 +756,7 @@ REDIS.set("LOOT_RADIUS_MAX",Long.toString((long)Math.round((Double.valueOf(REDIS
             in.close();
             //System.out.println(response.toString());
             JSONObject response_object = (JSONObject) parser.parse(response.toString());
-	    Double d = Double.parseDouble(response_object.get("result").toString().trim()) * 100000000L;
+	    Double d = Double.parseDouble(response_object.get("result").toString().trim()) * 1000000L;
 	    final Long balance = d.longValue();
             //System.out.println(balance);
 	    return balance;
@@ -778,7 +772,7 @@ REDIS.set("LOOT_RADIUS_MAX",Long.toString((long)Math.round((Double.valueOf(REDIS
             in.close();
             //System.out.println(response.toString());
             JSONObject response_object = (JSONObject) parser.parse(response.toString());
-	    Double d = Double.parseDouble(response_object.get("result").toString().trim()) * 100000000L;
+	    Double d = Double.parseDouble(response_object.get("result").toString().trim()) * 1000000L;
 	    final Long balance = d.longValue();
             //System.out.println(balance);
 	    return balance;
@@ -803,10 +797,10 @@ REDIS.set("LOOT_RADIUS_MAX",Long.toString((long)Math.round((Double.valueOf(REDIS
 	params.add(confirmations);
         //System.out.println("Parms: " + params);
         jsonObject.put("params", params);
-        URL url = new URL("http://" + SatoshiQuest.BITCOIN_NODE_HOST + ":" + SatoshiQuest.BITCOIN_NODE_PORT + "/wallet/" + account_id);
+        URL url = new URL("http://" + LBRYQuest.BITCOIN_NODE_HOST + ":" + LBRYQuest.BITCOIN_NODE_PORT + "/wallet/" + account_id);
         //System.out.println(url.toString());
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        String userPassword = SatoshiQuest.BITCOIN_NODE_USERNAME + ":" + SatoshiQuest.BITCOIN_NODE_PASSWORD;
+        String userPassword = LBRYQuest.BITCOIN_NODE_USERNAME + ":" + LBRYQuest.BITCOIN_NODE_PASSWORD;
         String encoding = Base64.getEncoder().encodeToString(userPassword.getBytes());
         con.setRequestProperty("Authorization", "Basic " + encoding);
 
@@ -831,7 +825,7 @@ REDIS.set("LOOT_RADIUS_MAX",Long.toString((long)Math.round((Double.valueOf(REDIS
             in.close();
             //System.out.println(response.toString());
             JSONObject response_object = (JSONObject) parser.parse(response.toString());
-	    Double d = Double.parseDouble(response_object.get("result").toString().trim()) * 100000000L;
+	    Double d = Double.parseDouble(response_object.get("result").toString().trim()) * 1000000L;
 	    final Long balance = d.longValue();
             //System.out.println(balance);
 	    return balance;
@@ -847,7 +841,7 @@ REDIS.set("LOOT_RADIUS_MAX",Long.toString((long)Math.round((Double.valueOf(REDIS
             in.close();
             //System.out.println(response.toString());
             JSONObject response_object = (JSONObject) parser.parse(response.toString());
-	    Double d = Double.parseDouble(response_object.get("result").toString().trim()) * 100000000L;
+	    Double d = Double.parseDouble(response_object.get("result").toString().trim()) * 1000000L;
 	    final Long balance = d.longValue();
             //System.out.println(balance);
 	    return balance;
@@ -867,10 +861,10 @@ REDIS.set("LOOT_RADIUS_MAX",Long.toString((long)Math.round((Double.valueOf(REDIS
         jsonObject.put("jsonrpc", "1.0");
         jsonObject.put("id", SERVER_NAME);
         jsonObject.put("method", "getunconfirmedbalance");
-        URL url = new URL("http://" + SatoshiQuest.BITCOIN_NODE_HOST + ":" + SatoshiQuest.BITCOIN_NODE_PORT + "/wallet/" + account_id);
+        URL url = new URL("http://" + LBRYQuest.BITCOIN_NODE_HOST + ":" + LBRYQuest.BITCOIN_NODE_PORT + "/wallet/" + account_id);
         //System.out.println(url.toString());
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        String userPassword = SatoshiQuest.BITCOIN_NODE_USERNAME + ":" + SatoshiQuest.BITCOIN_NODE_PASSWORD;
+        String userPassword = LBRYQuest.BITCOIN_NODE_USERNAME + ":" + LBRYQuest.BITCOIN_NODE_PASSWORD;
         String encoding = Base64.getEncoder().encodeToString(userPassword.getBytes());
         con.setRequestProperty("Authorization", "Basic " + encoding);
 
@@ -895,7 +889,7 @@ REDIS.set("LOOT_RADIUS_MAX",Long.toString((long)Math.round((Double.valueOf(REDIS
             in.close();
             //System.out.println(response.toString());
             JSONObject response_object = (JSONObject) parser.parse(response.toString());
-	    Double d = Double.parseDouble(response_object.get("result").toString().trim()) * 100000000L;
+	    Double d = Double.parseDouble(response_object.get("result").toString().trim()) * 1000000L;
 	    final Long balance = d.longValue();
             //System.out.println(balance);
 	    return balance;
@@ -911,7 +905,7 @@ REDIS.set("LOOT_RADIUS_MAX",Long.toString((long)Math.round((Double.valueOf(REDIS
             in.close();
             //System.out.println(response.toString());
             JSONObject response_object = (JSONObject) parser.parse(response.toString());
-	    Double d = Double.parseDouble(response_object.get("result").toString().trim()) * 100000000L;
+	    Double d = Double.parseDouble(response_object.get("result").toString().trim()) * 1000000L;
 	    final Long balance = d.longValue();
             //System.out.println(balance);
 	    return balance;
@@ -1244,7 +1238,7 @@ try {
     jsonObject.put("method", "settxfee");
     JSONArray params = new JSONArray();
     //System.out.println(sat);
-    BigDecimal decimalSat = new BigDecimal(sats * 0.00001);
+    BigDecimal decimalSat = new BigDecimal(sats * 0.0000001);
     decimalSat = decimalSat.setScale(8, BigDecimal.ROUND_DOWN);
     //System.out.println(decimalSat);
     params.add(decimalSat);
@@ -1329,14 +1323,14 @@ try {
 
                 playSBoardObj.setDisplaySlot(DisplaySlot.SIDEBAR);
 
-                playSBoardObj.setDisplayName(ChatColor.GREEN + ChatColor.BOLD.toString() + "Satoshi" + ChatColor.GOLD + ChatColor.BOLD.toString() + "Quest");
+                playSBoardObj.setDisplayName(ChatColor.GREEN + ChatColor.BOLD.toString() + "LBRY" + ChatColor.WHITE + ChatColor.BOLD.toString() + "Quest");
 
 		if (isPlayersAroundLoot == false) {
 		long lootBalance = (long)(getBalance(SERVERDISPLAY_NAME,1) * THIS_ROUND_WIN_PERC);
 		double lootAmount =  (double)(exRate * (lootBalance * 0.00000001));
 		//lootAmount = 211.37;  // for testing
 		if (lootAmount > MAX_WIN_AMOUNT) {
-			lootBalance = (long)((1 / (exRate/MAX_WIN_AMOUNT)) * 100000000);
+			lootBalance = (long)((1 / (exRate/MAX_WIN_AMOUNT)) * 1000000);
 			lootAmount = (double)(exRate * (lootBalance * 0.00000001));
 		}       
 		DecimalFormat df = new DecimalFormat("#.##");
@@ -1394,10 +1388,10 @@ try {
        
     }
   public void teleportToSpawn(Player player) {
-    SatoshiQuest satoshiQuest = this;
+    LBRYQuest lbryQuest = this;
     // TODO: open the tps inventory
     //player.sendMessage(ChatColor.GREEN + "Teleporting to spawn...");
-    player.setMetadata("teleporting", new FixedMetadataValue(satoshiQuest, true));
+    player.setMetadata("teleporting", new FixedMetadataValue(lbryQuest, true));
     World world = Bukkit.getWorld(SERVERDISPLAY_NAME);
 
     final Location spawn = world.getSpawnLocation();
@@ -1406,16 +1400,16 @@ try {
     if (!c.isLoaded()) {
       c.load();
     }
-    satoshiQuest
+    lbryQuest
         .getServer()
         .getScheduler()
         .scheduleSyncDelayedTask(
-            satoshiQuest,
+            lbryQuest,
             new Runnable() {
 
               public void run() {
                 player.teleport(spawn);
-                player.removeMetadata("teleporting", satoshiQuest);
+                player.removeMetadata("teleporting", lbryQuest);
               }
             },
             60L);
@@ -1479,7 +1473,7 @@ if((exTime15 <= ((new Date().getTime()) - waitTime15))||(exRate == 10500.00)) {
 			double lootAmount =  (double)(exRate * (lootBalance * 0.00000001));
 			//lootAmount = 211.37; // for testing
 			if (lootAmount > MAX_WIN_AMOUNT) {
-			lootBalance = (long)((1 / (exRate/MAX_WIN_AMOUNT)) * 100000000);
+			lootBalance = (long)((1 / (exRate/MAX_WIN_AMOUNT)) * 1000000);
 			lootAmount = (double)(exRate * (lootBalance * 0.00000001));
 		}               
         		//System.out.print(df.format(lootAmount));
@@ -1838,7 +1832,7 @@ File dir3 = new File(getServer().getWorldContainer().getAbsolutePath() + "/" + S
 
 
 public void teleportToLootSpawn(Player player) {
-    SatoshiQuest satoshiQuest = this;
+    LBRYQuest satoshiQuest = this;
     // TODO: open the tps inventory
     //player.sendMessage(ChatColor.GREEN + "Teleporting to spawn...");
     player.setMetadata("teleporting", new FixedMetadataValue(satoshiQuest, true));

@@ -1,16 +1,16 @@
-package com.satoshiquest.satoshiquest.events;
+package com.lbryquest.lbryquest.events;
 
-import com.satoshiquest.satoshiquest.SatoshiQuest;
+import com.lbryquest.lbryquest.LBRYQuest;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServerListPingEvent;
 
 public class ServerEvents implements Listener {
-  SatoshiQuest satoshiQuest;
+  LBRYQuest lbryQuest;
 
-  public ServerEvents(SatoshiQuest plugin) {
-    satoshiQuest = plugin;
+  public ServerEvents(LBRYQuest plugin) {
+    lbryQuest = plugin;
   }
 
   @EventHandler
@@ -19,9 +19,9 @@ public class ServerEvents implements Listener {
     event.setMotd(
         ChatColor.GOLD
             + ChatColor.BOLD.toString()
-            + SatoshiQuest.SERVERDISPLAY_NAME
+            + LBRYQuest.SERVERDISPLAY_NAME
             + ChatColor.RESET
             + " - The server that runs on "
-            + SatoshiQuest.DENOMINATION_NAME);
+            + LBRYQuest.DENOMINATION_NAME);
   }
 }

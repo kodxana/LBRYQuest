@@ -1,17 +1,16 @@
-package com.satoshiquest.satoshiquest.commands;
+package com.lbryquest.lbryquest.commands;
 
-import com.satoshiquest.satoshiquest.SatoshiQuest;
-import org.bukkit.Bukkit;
+import com.lbryquest.lbryquest.LBRYQuest;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class WithdrawCommand extends CommandAction {
-  private SatoshiQuest satoshiQuest;
+  private LBRYQuest lbryQuest;
 
-  public WithdrawCommand(SatoshiQuest plugin) {
-    satoshiQuest = plugin;
+  public WithdrawCommand(LBRYQuest plugin) {
+    lbryQuest = plugin;
   }
 
   public boolean run(
@@ -33,7 +32,7 @@ if (args[0].equalsIgnoreCase("help") || !(args.length >= 1)) {
         return false;
       }
       final Long amount = Long.parseLong(args[0]);
-      final Long sat = amount * SatoshiQuest.DENOMINATION_FACTOR;
+      final Long sat = amount * LBRYQuest.DENOMINATION_FACTOR;
 
       if (amount != 0) {
 
@@ -41,20 +40,20 @@ if (args[0].equalsIgnoreCase("help") || !(args.length >= 1)) {
             if (!args[1].equalsIgnoreCase(player.getDisplayName())) {
               try {
 
-                Long balance = satoshiQuest.getBalance(player.getUniqueId().toString(),1);
+                Long balance = lbryQuest.getBalance(player.getUniqueId().toString(),1);
 
                 if (balance >= sat) {
                   // TODO: Pay to user address
-		  String didSend = satoshiQuest.sendToAddress(player.getUniqueId().toString(),args[1].toString(), sat);
+		  String didSend = lbryQuest.sendToAddress(player.getUniqueId().toString(),args[1].toString(), sat);
                   if (didSend != "failed") {
-                    satoshiQuest.updateScoreboard(player);
+                    lbryQuest.updateScoreboard(player);
                     player.sendMessage(
                         ChatColor.GREEN
                             + "Your withdraw "
                             + ChatColor.LIGHT_PURPLE
                             + sat
                             + " "
-                            + SatoshiQuest.DENOMINATION_NAME
+                            + LBRYQuest.DENOMINATION_NAME
                             + ChatColor.GREEN
                             + " to address "
                             + ChatColor.BLUE
@@ -79,7 +78,7 @@ if (args[0].equalsIgnoreCase("help") || !(args.length >= 1)) {
       return false;
     }
 	try {
-	      satoshiQuest.updateScoreboard(player);
+      lbryQuest.updateScoreboard(player);
 	} catch(Exception e) {
 					e.printStackTrace();
 				}

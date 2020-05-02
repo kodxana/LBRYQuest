@@ -1,9 +1,9 @@
 api-version: 1.13
-name: SatoshiQuest
+name: LBRYQuest
 version: 1.0
-author: The SatoshiQuest Dev Team
-main: com.satoshiquest.satoshiquest.SatoshiQuest
-description: The SatoshiQuest Open Source Project
+author: The LBRYQuest Dev Team
+main: com.lbryquest.lbryquest.LBRYQuest
+description: The LBRYQuest Open Source Project
 commands:
   ban:
     description: "Adds player to the ban list"
