@@ -1,17 +1,15 @@
-//bitcoinjake09 11/9/2019 - a bitcoin tressure hunt in minecraft - satoshiquest
-package com.satoshiquest.satoshiquest;
+//bitcoinjake09 11/9/2019 - a bitcoin tressure hunt in minecraft - lbryquest
+package com.lbryquest.lbryquest;
 
-import com.satoshiquest.satoshiquest.commands.*;
-import com.satoshiquest.satoshiquest.events.*;
-import com.google.gson.JsonObject;
+import com.lbryquest.lbryquest.commands.*;
+import com.lbryquest.lbryquest.events.*;
+
 import java.io.*;
 import java.net.*;
-import java.sql.DriverManager;
 import java.text.ParseException;
 import java.text.*;
 import java.util.*;
 import java.math.BigDecimal;
-import java.util.concurrent.TimeUnit;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -30,16 +28,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import redis.clients.jedis.Jedis;
 import org.bukkit.block.Block;
-import org.bukkit.material.*;
 import org.bukkit.Material;
-import org.bukkit.material.MaterialData;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.Attachable;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.advancement.*;
 
@@ -48,12 +39,12 @@ import org.bukkit.advancement.*;
 // DARK_BLUE UNDERLINE : Link, RED : Server error, DARK_RED : User error, GRAY : Info, DARK_GRAY :
 // Clan, DARK_GREEN : Landname
 
-public class SatoshiQuest extends JavaPlugin {
+public class LBRYQuest extends JavaPlugin {
   // TODO: remove env variables not being used anymore
   // Connecting to REDIS
   // Links to the administration account via Environment Variables
-  public static final String SATOSHIQUEST_ENV =
-      System.getenv("SATOSHIQUEST_ENV") != null ? System.getenv("SATOSHIQUEST_ENV") : "development";
+  public static final String LBRYQUEST_ENV =
+      System.getenv("LBRYQUEST_ENV") != null ? System.getenv("LBRYQUEST_ENV") : "development";
   public static final UUID ADMIN_UUID =
       System.getenv("ADMIN_UUID") != null ? UUID.fromString(System.getenv("ADMIN_UUID")) : null;
  public static final String ADMIN_ADDRESS =
@@ -67,11 +58,11 @@ public class SatoshiQuest extends JavaPlugin {
   public static final int BITCOIN_NODE_PORT =
       System.getenv("BITCOIN_PORT_8332_TCP_PORT") != null
           ? Integer.parseInt(System.getenv("BITCOIN_PORT_8332_TCP_PORT"))
-          : 8332;
+          : 9245;
   public static final String SERVERDISPLAY_NAME =
-      System.getenv("SERVERDISPLAY_NAME") != null ? System.getenv("SERVERDISPLAY_NAME") : "SatoshiQuest";
+      System.getenv("SERVERDISPLAY_NAME") != null ? System.getenv("SERVERDISPLAY_NAME") : "LBRYQuest";
   public static final String CRYPTO_TICKER =
-      System.getenv("CRYPTO_TICKER") != null ? System.getenv("CRYPTO_TICKER") : "BTC";
+      System.getenv("CRYPTO_TICKER") != null ? System.getenv("CRYPTO_TICKER") : "LBC";
   public static final Long DENOMINATION_FACTOR =
       System.getenv("DENOMINATION_FACTOR") != null
           ? Long.parseLong(System.getenv("DENOMINATION_FACTOR"))
@@ -79,13 +70,13 @@ public class SatoshiQuest extends JavaPlugin {
   public static final Integer CRYPTO_DECIMALS =
       System.getenv("CRYPTO_DECIMALS") != null
           ? Integer.parseInt(System.getenv("CRYPTO_DECIMALS"))
-          : 8;
+          : 6;
   public static final Integer DISPLAY_DECIMALS =
       System.getenv("DISPLAY_DECIMALS") != null
           ? Integer.parseInt(System.getenv("DISPLAY_DECIMALS"))
-          : 8;
+          : 2;
   public static final String DENOMINATION_NAME =
-      System.getenv("DENOMINATION_NAME") != null ? System.getenv("DENOMINATION_NAME") : "Sats";
+      System.getenv("DENOMINATION_NAME") != null ? System.getenv("DENOMINATION_NAME") : "LBCs";
   public static final String BITCOIN_NODE_USERNAME = System.getenv("BITCOIN_ENV_USERNAME");
   public static final String BITCOIN_NODE_PASSWORD = System.getenv("BITCOIN_ENV_PASSWORD");
   public static final String DISCORD_HOOK_URL = System.getenv("DISCORD_HOOK_URL");
@@ -97,19 +88,19 @@ public class SatoshiQuest extends JavaPlugin {
           System.getenv("MAX_FEE") != null ? Long.parseLong(System.getenv("MAX_FEE")) : 15.0;
 
   public static final String SERVER_NAME =
-      System.getenv("SERVER_NAME") != null ? System.getenv("SERVER_NAME") : "SatoshiQuest";
+      System.getenv("SERVER_NAME") != null ? System.getenv("SERVER_NAME") : "LBRYQuest";
 
   public static final String ADDRESS_URL =
-      System.getenv("ADDRESS_URL") != null ? System.getenv("ADDRESS_URL") : "https://www.blockchain.com/btc/address/";
+      System.getenv("ADDRESS_URL") != null ? System.getenv("ADDRESS_URL") : "https://explorer.lbry.com/address/";
 
   public static final String TX_URL =
-      System.getenv("TX_URL") != null ? System.getenv("TX_URL") : "https://www.blockchain.com/btc/tx/";
+      System.getenv("TX_URL") != null ? System.getenv("TX_URL") : "https://explorer.lbry.com/tx/";
 
   public static final String SERVER_WEBSITE =
-      System.getenv("SERVER_WEBSITE") != null ? System.getenv("SERVER_WEBSITE") : "http://AllAboutBTC.com/SatoshiQuest.html";
+      System.getenv("SERVER_WEBSITE") != null ? System.getenv("SERVER_WEBSITE") : "";
 //https://www.cryptonator.com/api/currencies
   public static final String COINGECKO_CRYPTO =
-      System.getenv("COINGECKO_CRYPTO") != null ? System.getenv("COINGECKO_CRYPTO") : "bitcoin";
+      System.getenv("COINGECKO_CRYPTO") != null ? System.getenv("COINGECKO_CRYPTO") : "lbry-credits";
 
   // REDIS: Look for Environment variables on hostname and port, otherwise defaults to
   // localhost:6379
@@ -446,10 +437,10 @@ REDIS.set("LOOT_RADIUS_MAX",Long.toString((long)Math.round((Double.valueOf(REDIS
     //System.out.println(params);
     jsonObject.put("params", params);
     //System.out.println("Checking blockchain info...");
-    URL url = new URL("http://" + SatoshiQuest.BITCOIN_NODE_HOST + ":" + SatoshiQuest.BITCOIN_NODE_PORT);
+    URL url = new URL("http://" + LBRYQuest.BITCOIN_NODE_HOST + ":" + LBRYQuest.BITCOIN_NODE_PORT);
     //System.out.println(url.toString());
     HttpURLConnection con = (HttpURLConnection) url.openConnection();
-    String userPassword = SatoshiQuest.BITCOIN_NODE_USERNAME + ":" + SatoshiQuest.BITCOIN_NODE_PASSWORD;
+    String userPassword = LBRYQuest.BITCOIN_NODE_USERNAME + ":" + LBRYQuest.BITCOIN_NODE_PASSWORD;
     String encoding = Base64.getEncoder().encodeToString(userPassword.getBytes());
     con.setRequestProperty("Authorization", "Basic " + encoding);
 
@@ -506,10 +497,10 @@ REDIS.set("LOOT_RADIUS_MAX",Long.toString((long)Math.round((Double.valueOf(REDIS
         JSONArray params = new JSONArray();
         //System.out.println(params);
         jsonObject.put("params", params);
-        URL url = new URL("http://" + SatoshiQuest.BITCOIN_NODE_HOST + ":" + SatoshiQuest.BITCOIN_NODE_PORT+ "/wallet/");
+        URL url = new URL("http://" + LBRYQuest.BITCOIN_NODE_HOST + ":" + LBRYQuest.BITCOIN_NODE_PORT+ "/wallet/");
         //System.out.println(url.toString());
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        String userPassword = SatoshiQuest.BITCOIN_NODE_USERNAME + ":" + SatoshiQuest.BITCOIN_NODE_PASSWORD;
+        String userPassword = LBRYQuest.BITCOIN_NODE_USERNAME + ":" + LBRYQuest.BITCOIN_NODE_PASSWORD;
         String encoding = Base64.getEncoder().encodeToString(userPassword.getBytes());
         con.setRequestProperty("Authorization", "Basic " + encoding);
 
@@ -564,10 +555,10 @@ REDIS.set("LOOT_RADIUS_MAX",Long.toString((long)Math.round((Double.valueOf(REDIS
         JSONArray params = new JSONArray();
         //System.out.println(params);
         jsonObject.put("params", params);
-        URL url = new URL("http://" + SatoshiQuest.BITCOIN_NODE_HOST + ":" + SatoshiQuest.BITCOIN_NODE_PORT + "/wallet/" + account_id);
+        URL url = new URL("http://" + LBRYQuest.BITCOIN_NODE_HOST + ":" + LBRYQuest.BITCOIN_NODE_PORT + "/wallet/" + account_id);
         //System.out.println(url.toString());
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        String userPassword = SatoshiQuest.BITCOIN_NODE_USERNAME + ":" + SatoshiQuest.BITCOIN_NODE_PASSWORD;
+        String userPassword = LBRYQuest.BITCOIN_NODE_USERNAME + ":" + LBRYQuest.BITCOIN_NODE_PASSWORD;
         String encoding = Base64.getEncoder().encodeToString(userPassword.getBytes());
         con.setRequestProperty("Authorization", "Basic " + encoding);
 
@@ -627,12 +618,12 @@ REDIS.set("LOOT_RADIUS_MAX",Long.toString((long)Math.round((Double.valueOf(REDIS
     //System.out.println(params);
     jsonObject.put("params", params);
     //System.out.println("Checking blockchain info...");
-    URL url = new URL("http://" + SatoshiQuest.BITCOIN_NODE_HOST + ":" + SatoshiQuest.BITCOIN_NODE_PORT + "/wallet/");
+    URL url = new URL("http://" + LBRYQuest.BITCOIN_NODE_HOST + ":" + LBRYQuest.BITCOIN_NODE_PORT + "/wallet/");
     //System.out.println(url.toString());
     //System.out.println(jsonObject.toString());
 
       HttpURLConnection con = (HttpURLConnection) url.openConnection();
-    String userPassword = SatoshiQuest.BITCOIN_NODE_USERNAME + ":" + SatoshiQuest.BITCOIN_NODE_PASSWORD;
+    String userPassword = LBRYQuest.BITCOIN_NODE_USERNAME + ":" + LBRYQuest.BITCOIN_NODE_PASSWORD;
     String encoding = Base64.getEncoder().encodeToString(userPassword.getBytes());
     con.setRequestProperty("Authorization", "Basic " + encoding);
 
@@ -754,10 +745,10 @@ REDIS.set("LOOT_RADIUS_MAX",Long.toString((long)Math.round((Double.valueOf(REDIS
 	params.add(confirmations);
         //System.out.println("Parms: " + params);
         jsonObject.put("params", params);
-        URL url = new URL("http://" + SatoshiQuest.BITCOIN_NODE_HOST + ":" + SatoshiQuest.BITCOIN_NODE_PORT + "/wallet/" + account_id);
+        URL url = new URL("http://" + LBRYQuest.BITCOIN_NODE_HOST + ":" + LBRYQuest.BITCOIN_NODE_PORT + "/wallet/" + account_id);
         //System.out.println(url.toString());
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        String userPassword = SatoshiQuest.BITCOIN_NODE_USERNAME + ":" + SatoshiQuest.BITCOIN_NODE_PASSWORD;
+        String userPassword = LBRYQuest.BITCOIN_NODE_USERNAME + ":" + LBRYQuest.BITCOIN_NODE_PASSWORD;
         String encoding = Base64.getEncoder().encodeToString(userPassword.getBytes());
         con.setRequestProperty("Authorization", "Basic " + encoding);
 
@@ -823,10 +814,10 @@ REDIS.set("LOOT_RADIUS_MAX",Long.toString((long)Math.round((Double.valueOf(REDIS
 	params.add(confirmations);
         //System.out.println("Parms: " + params);
         jsonObject.put("params", params);
-        URL url = new URL("http://" + SatoshiQuest.BITCOIN_NODE_HOST + ":" + SatoshiQuest.BITCOIN_NODE_PORT + "/wallet/" + account_id);
+        URL url = new URL("http://" + LBRYQuest.BITCOIN_NODE_HOST + ":" + LBRYQuest.BITCOIN_NODE_PORT + "/wallet/" + account_id);
         //System.out.println(url.toString());
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        String userPassword = SatoshiQuest.BITCOIN_NODE_USERNAME + ":" + SatoshiQuest.BITCOIN_NODE_PASSWORD;
+        String userPassword = LBRYQuest.BITCOIN_NODE_USERNAME + ":" + LBRYQuest.BITCOIN_NODE_PASSWORD;
         String encoding = Base64.getEncoder().encodeToString(userPassword.getBytes());
         con.setRequestProperty("Authorization", "Basic " + encoding);
 
@@ -887,10 +878,10 @@ REDIS.set("LOOT_RADIUS_MAX",Long.toString((long)Math.round((Double.valueOf(REDIS
         jsonObject.put("jsonrpc", "1.0");
         jsonObject.put("id", SERVER_NAME);
         jsonObject.put("method", "getunconfirmedbalance");
-        URL url = new URL("http://" + SatoshiQuest.BITCOIN_NODE_HOST + ":" + SatoshiQuest.BITCOIN_NODE_PORT + "/wallet/" + account_id);
+        URL url = new URL("http://" + LBRYQuest.BITCOIN_NODE_HOST + ":" + LBRYQuest.BITCOIN_NODE_PORT + "/wallet/" + account_id);
         //System.out.println(url.toString());
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        String userPassword = SatoshiQuest.BITCOIN_NODE_USERNAME + ":" + SatoshiQuest.BITCOIN_NODE_PASSWORD;
+        String userPassword = LBRYQuest.BITCOIN_NODE_USERNAME + ":" + LBRYQuest.BITCOIN_NODE_PASSWORD;
         String encoding = Base64.getEncoder().encodeToString(userPassword.getBytes());
         con.setRequestProperty("Authorization", "Basic " + encoding);
 
@@ -1421,10 +1412,10 @@ try {
        
     }
   public void teleportToSpawn(Player player) {
-    SatoshiQuest satoshiQuest = this;
+    LBRYQuest lbryQuest = this;
     // TODO: open the tps inventory
     //player.sendMessage(ChatColor.GREEN + "Teleporting to spawn...");
-    player.setMetadata("teleporting", new FixedMetadataValue(satoshiQuest, true));
+    player.setMetadata("teleporting", new FixedMetadataValue(lbryQuest, true));
     World world = Bukkit.getWorld(SERVERDISPLAY_NAME);
 
     final Location spawn = world.getSpawnLocation();
@@ -1433,16 +1424,16 @@ try {
     if (!c.isLoaded()) {
       c.load();
     }
-    satoshiQuest
+    lbryQuest
         .getServer()
         .getScheduler()
         .scheduleSyncDelayedTask(
-            satoshiQuest,
+            lbryQuest,
             new Runnable() {
 
               public void run() {
                 player.teleport(spawn);
-                player.removeMetadata("teleporting", satoshiQuest);
+                player.removeMetadata("teleporting", lbryQuest);
               }
             },
             60L);
@@ -1899,10 +1890,10 @@ File dir3 = new File(getServer().getWorldContainer().getAbsolutePath() + "/" + S
 
 
 public void teleportToLootSpawn(Player player) {
-    SatoshiQuest satoshiQuest = this;
+    LBRYQuest lbryQuest = this;
     // TODO: open the tps inventory
     //player.sendMessage(ChatColor.GREEN + "Teleporting to spawn...");
-    player.setMetadata("teleporting", new FixedMetadataValue(satoshiQuest, true));
+    player.setMetadata("teleporting", new FixedMetadataValue(lbryQuest, true));
     World world = Bukkit.getWorld(SERVERDISPLAY_NAME);
 
     final Location spawn = world.getSpawnLocation();
@@ -1911,16 +1902,16 @@ public void teleportToLootSpawn(Player player) {
     if (!c.isLoaded()) {
       c.load();
     }
-    satoshiQuest
+    lbryQuest
         .getServer()
         .getScheduler()
         .scheduleSyncDelayedTask(
-            satoshiQuest,
+            lbryQuest,
             new Runnable() {
 
               public void run() {
                 player.teleport(spawn);
-                player.removeMetadata("teleporting", satoshiQuest);
+                player.removeMetadata("teleporting", lbryQuest);
               }
             },
             60L);
@@ -2451,19 +2442,19 @@ JSONParser parser = new JSONParser();
 	return oneSats;
   }
 /* CRYPTO_DECIMALS @8
-satoshiquest | [22:46:35 INFO]: #.00000000
-satoshiquest | [22:46:35 INFO]: Lowest Decimal set: .00000001
-satoshiquest | [22:46:35 INFO]: total Sats in 1 coin: 100000000
+lbryquest | [22:46:35 INFO]: #.00000000
+lbryquest | [22:46:35 INFO]: Lowest Decimal set: .00000001
+lbryquest | [22:46:35 INFO]: total Sats in 1 coin: 100000000
 
 CRYPTO_DECIMALS @6
-satoshiquest | [22:44:49 INFO]: #.000000
-satoshiquest | [22:44:49 INFO]: Lowest Decimal set: .000001
-satoshiquest | [22:44:49 INFO]: total Sats in 1 coin: 1000000
+lbryquest | [22:44:49 INFO]: #.000000
+lbryquest | [22:44:49 INFO]: Lowest Decimal set: .000001
+lbryquest | [22:44:49 INFO]: total Sats in 1 coin: 1000000
 
 CRYPTO_DECIMALS @2
-satoshiquest | [22:48:40 INFO]: #.00
-satoshiquest | [22:48:40 INFO]: Lowest Decimal set: .01
-satoshiquest | [22:48:40 INFO]: total Sats in 1 coin: 100
+lbryquest | [22:48:40 INFO]: #.00
+lbryquest | [22:48:40 INFO]: Lowest Decimal set: .01
+lbryquest | [22:48:40 INFO]: total Sats in 1 coin: 100
 
 */
 
@@ -2560,7 +2551,7 @@ satoshiquest | [22:48:40 INFO]: total Sats in 1 coin: 100
 
           con.setRequestMethod("POST");
           con.setRequestProperty("Content-Type", "application/json");
-          con.setRequestProperty("Cookie", "satoshiquest=true");
+          con.setRequestProperty("Cookie", "lbryquest=true");
           con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
 
           con.setDoOutput(true);

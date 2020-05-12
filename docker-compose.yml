@@ -1,19 +1,19 @@
 spigot:
-  container_name: satoshiquest
+  container_name: lbryquest
   build: .
   volumes:
-    - "/SatoshiQuest/spigot/world:/spigot/world"
-    - "/SatoshiQuest/spigot/world_nether:/spigot/world_nether"
-    - "/SatoshiQuest/spigot/world_the_end:/spigot/world_the_end"
-    - "/SatoshiQuest/spigot/SatoshiQuest:/spigot/SatoshiQuest"
-    - "/SatoshiQuest/spigot/SatoshiQuest_nether:/spigot/SatoshiQuest_nether"
-    - "/SatoshiQuest/spigot/SatoshiQuest_the_end:/spigot/SatoshiQuest_the_end"
+    - "/LBRYQuest/spigot/world:/spigot/world"
+    - "/LBRYQuest/spigot/world_nether:/spigot/world_nether"
+    - "/LBRYQuest/spigot/world_the_end:/spigot/world_the_end"
+    - "/LBRYQuest/spigot/LBRYQuest:/spigot/LBRYQuest"
+    - "/LBRYQuest/spigot/LBRYQuest_nether:/spigot/LBRYQuest_nether"
+    - "/LBRYQuest/spigot/LBRYQuest_the_end:/spigot/LBRYQuest_the_end"
   ports:
     - "25566:25566"
   env_file:
     - variables.env
   environment:
-    - SATOSHIQUEST_ENV=development
+    - LBRYQUEST_ENV=development
     - BUYIN_AMOUNT=1.00
     - LIVES_PERBUYIN=1
     - ADDRESS_URL=https://www.blockchain.com/btc/address/

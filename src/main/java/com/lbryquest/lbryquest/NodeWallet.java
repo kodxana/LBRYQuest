@@ -1,4 +1,4 @@
-package com.satoshiquest.satoshiquest;
+package com.lbryquest.lbryquest;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,18 +13,18 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class NodeWallet {
-  private SatoshiQuest satoshiQuest;
+  private LBRYQuest lbryQuest;
   public String account_id;
   public String address;
 
   public NodeWallet(String _account_id) {
     this.account_id = _account_id;
 	try {
-	if (!SatoshiQuest.REDIS.exists("nodeAddress"+account_id)) {
+	if (!LBRYQuest.REDIS.exists("nodeAddress"+account_id)) {
     		this.address = getNewAccountAddress();
-		SatoshiQuest.REDIS.set("nodeAddress"+account_id,this.address);
+		LBRYQuest.REDIS.set("nodeAddress"+account_id,this.address);
 	} else {
-	    	this.address = SatoshiQuest.REDIS.get("nodeAddress"+account_id);
+	    	this.address = LBRYQuest.REDIS.get("nodeAddress"+account_id);
 	}
 	} catch (Exception e) {
 			e.printStackTrace();
@@ -38,16 +38,16 @@ public class NodeWallet {
 
     final JSONObject jsonObject = new JSONObject();
     jsonObject.put("jsonrpc", "1.0");
-    jsonObject.put("id", "satoshiquest");
+    jsonObject.put("id", "lbryquest");
     jsonObject.put("method", "getaddressesbylabel");
     JSONArray params = new JSONArray();
     params.add(account_id);
-    if (SatoshiQuest.SATOSHIQUEST_ENV == "development")
+    if (LBRYQuest.LBRYQUEST_ENV == "development")
       System.out.println("[getaddressesbylabel] " + account_id);
     jsonObject.put("params", params);
-    URL url = new URL("http://" + SatoshiQuest.BITCOIN_NODE_HOST + ":" + SatoshiQuest.BITCOIN_NODE_PORT + "/wallet/" + account_id);
+    URL url = new URL("http://" + LBRYQuest.BITCOIN_NODE_HOST + ":" + LBRYQuest.BITCOIN_NODE_PORT + "/wallet/" + account_id);
     HttpURLConnection con = (HttpURLConnection) url.openConnection();
-    String userPassword = SatoshiQuest.BITCOIN_NODE_USERNAME + ":" + SatoshiQuest.BITCOIN_NODE_PASSWORD;
+    String userPassword = LBRYQuest.BITCOIN_NODE_USERNAME + ":" + LBRYQuest.BITCOIN_NODE_PASSWORD;
     String encoding = Base64.getEncoder().encodeToString(userPassword.getBytes());
     con.setRequestProperty("Authorization", "Basic " + encoding);
     con.setConnectTimeout(5000);
@@ -71,7 +71,7 @@ public class NodeWallet {
     }
     in.close();
     JSONObject response_object = (JSONObject) parser.parse(response.toString());
-    if (SatoshiQuest.SATOSHIQUEST_ENV == "development") System.out.println(response_object);
+    if (LBRYQuest.LBRYQUEST_ENV == "development") System.out.println(response_object);
     return response_object.get("result").toString();
   }
 
@@ -80,17 +80,17 @@ public class NodeWallet {
 
     final JSONObject jsonObject = new JSONObject();
     jsonObject.put("jsonrpc", "1.0");
-    jsonObject.put("id", "satoshiquest");
+    jsonObject.put("id", "lbryquest");
     jsonObject.put("method", "getnewaddress");
     JSONArray params = new JSONArray();
     params.add(account_id);
     params.add("legacy");
-    if (SatoshiQuest.SATOSHIQUEST_ENV == "development")
+    if (LBRYQuest.LBRYQUEST_ENV == "development")
       System.out.println("[getnewaddress] " + account_id);
     jsonObject.put("params", params);
-    URL url = new URL("http://" + SatoshiQuest.BITCOIN_NODE_HOST + ":" + SatoshiQuest.BITCOIN_NODE_PORT + "/wallet/" + account_id);
+    URL url = new URL("http://" + LBRYQuest.BITCOIN_NODE_HOST + ":" + LBRYQuest.BITCOIN_NODE_PORT + "/wallet/" + account_id);
     HttpURLConnection con = (HttpURLConnection) url.openConnection();
-    String userPassword = SatoshiQuest.BITCOIN_NODE_USERNAME + ":" + SatoshiQuest.BITCOIN_NODE_PASSWORD;
+    String userPassword = LBRYQuest.BITCOIN_NODE_USERNAME + ":" + LBRYQuest.BITCOIN_NODE_PASSWORD;
     String encoding = Base64.getEncoder().encodeToString(userPassword.getBytes());
     con.setRequestProperty("Authorization", "Basic " + encoding);
     con.setConnectTimeout(5000);
@@ -115,7 +115,7 @@ public class NodeWallet {
     in.close();
     JSONObject response_object = (JSONObject) parser.parse(response.toString());
     this.address = response_object.get("result").toString();
-    if (SatoshiQuest.SATOSHIQUEST_ENV == "development") System.out.println(response_object);
+    if (LBRYQuest.LBRYQUEST_ENV == "development") System.out.println(response_object);
 	this.address = response_object.get("result").toString();
     return response_object.get("result").toString();
   }
@@ -126,17 +126,17 @@ public class NodeWallet {
 
         final JSONObject jsonObject = new JSONObject();
         jsonObject.put("jsonrpc", "1.0");
-        jsonObject.put("id", "satoshiquest");
+        jsonObject.put("id", "lbryquest");
         jsonObject.put("method", "getbalance");
         JSONArray params = new JSONArray();
 	params.add("*");
 	params.add(confirmations);
         System.out.println("Parms: " + params);
         jsonObject.put("params", params);
-        URL url = new URL("http://" + SatoshiQuest.BITCOIN_NODE_HOST + ":" + SatoshiQuest.BITCOIN_NODE_PORT + "/wallet/" + account_id);
+        URL url = new URL("http://" + LBRYQuest.BITCOIN_NODE_HOST + ":" + LBRYQuest.BITCOIN_NODE_PORT + "/wallet/" + account_id);
         System.out.println(url.toString());
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        String userPassword = SatoshiQuest.BITCOIN_NODE_USERNAME + ":" + SatoshiQuest.BITCOIN_NODE_PASSWORD;
+        String userPassword = LBRYQuest.BITCOIN_NODE_USERNAME + ":" + LBRYQuest.BITCOIN_NODE_PASSWORD;
         String encoding = Base64.getEncoder().encodeToString(userPassword.getBytes());
         con.setRequestProperty("Authorization", "Basic " + encoding);
 
@@ -200,17 +200,17 @@ public class NodeWallet {
       JSONParser parser = new JSONParser();
       final JSONObject jsonObject = new JSONObject();
       jsonObject.put("jsonrpc", "1.0");
-      jsonObject.put("id", "satoshiquest");
+      jsonObject.put("id", "lbryquest");
       jsonObject.put("method", "getbalance");
       JSONArray params = new JSONArray();
       params.add("*");
       params.add(confirmations);
       //params.add(confirmations);
       jsonObject.put("params", params);
-      URL url = new URL("http://" + SatoshiQuest.BITCOIN_NODE_HOST + ":" + SatoshiQuest.BITCOIN_NODE_PORT + "/wallet/" + account_id);
+      URL url = new URL("http://" + LBRYQuest.BITCOIN_NODE_HOST + ":" + LBRYQuest.BITCOIN_NODE_PORT + "/wallet/" + account_id);
       HttpURLConnection con = (HttpURLConnection) url.openConnection();
       con.setConnectTimeout(5000);
-      String userPassword = SatoshiQuest.BITCOIN_NODE_USERNAME + ":" + SatoshiQuest.BITCOIN_NODE_PASSWORD;
+      String userPassword = LBRYQuest.BITCOIN_NODE_USERNAME + ":" + LBRYQuest.BITCOIN_NODE_PASSWORD;
       String encoding = Base64.getEncoder().encodeToString(userPassword.getBytes());
       con.setRequestProperty("Authorization", "Basic " + encoding);
 

@@ -26,10 +26,10 @@ An example configuration would be:
     - LOOT_ANNOUNCE_RADIUS=100
     - ADDRESS_URL=https://www.blockchain.com/btc/address/
     - TX_URL=https://www.blockchain.com/btc/tx/
-    - SERVER_WEBSITE=http://AllAboutBTC.com/SatoshiQuest.html
+    - SERVER_WEBSITE=http://AllAboutBTC.com/LBRYQuest.html
     - COINGECKO_CRYPTO=bitcoin
     - DENOMINATION_NAME=Sats
-    - SERVER_NAME=SatoshiQuest
+    - SERVER_NAME=LBRYQuest
     - CRYPTO_DECIMALS=8
     - DISPLAY_DECIMALS=6
     - VOTE_URL

@@ -21,11 +21,11 @@ RUN echo "eula=true" > eula.txt
 COPY server.properties /spigot/
 COPY bukkit.yml /spigot/
 COPY spigot.yml /spigot/
-WORKDIR /satoshiquest
-COPY . /satoshiquest/
+WORKDIR /lbryquest
+COPY . /lbryquest/
 RUN mvn clean compile assembly:single
-RUN cp /satoshiquest/target/SatoshiQuest.jar /spigot/plugins/SatoshiQuest.jar
+RUN cp /lbryquest/target/LBRYQuest.jar /spigot/plugins/LBRYQuest.jar
 # Add the last version of NoCheatPlus
-# ADD https://github.com/BitcoinJake09/SatoshiQuest/blob/master/Clearlag.jar /spigot/plugins/Clearlag.jar
+# ADD https://github.com/BitcoinJake09/LBRYQuest/blob/master/Clearlag.jar /spigot/plugins/Clearlag.jar
 WORKDIR /spigot
 CMD java -Xmx8192m -jar spigot.jar

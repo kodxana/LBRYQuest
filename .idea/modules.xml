@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SatoshiQuest.iml" filepath="$PROJECT_DIR$/SatoshiQuest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LBRYQuest.iml" filepath="$PROJECT_DIR$/LBRYQuest.iml" />
     </modules>
   </component>
 </project>

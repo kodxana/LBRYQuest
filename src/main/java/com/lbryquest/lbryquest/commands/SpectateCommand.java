@@ -1,6 +1,6 @@
-package com.satoshiquest.satoshiquest.commands;
+package com.lbryquest.lbryquest.commands;
 
-import com.satoshiquest.satoshiquest.SatoshiQuest;
+import com.lbryquest.lbryquest.LBRYQuest;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -9,10 +9,10 @@ import org.bukkit.entity.Player;
 
 
 public class SpectateCommand extends CommandAction {
-    private SatoshiQuest satoshiQuest;
+    private LBRYQuest lbryQuest;
 
-    public SpectateCommand(SatoshiQuest plugin) {
-        this.satoshiQuest = plugin;
+    public SpectateCommand(LBRYQuest plugin) {
+        this.lbryQuest = plugin;
     }
 
     public boolean run(CommandSender sender, Command cmd, String label, String[] args, Player player) {

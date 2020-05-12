@@ -23,7 +23,7 @@ apply plugin: 'de.undercouch.download'
 apply plugin: 'eu.appsatori.fatjar'
 
 
-group 'satoshiquest'
+group 'lbryquest'
 
 apply plugin: 'java'
 
@@ -53,7 +53,7 @@ jar {
     actions = []
     dependsOn = []
     dependsOn('fatJar')
-    baseName = 'satoshiquest'
+    baseName = 'lbryquest'
     from('resources') {
         include 'plugin.yml'
         include 'config.yml'

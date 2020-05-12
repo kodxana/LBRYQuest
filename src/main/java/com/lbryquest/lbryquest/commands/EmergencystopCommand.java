@@ -1,4 +1,4 @@
-package com.satoshiquest.satoshiquest.commands;
+package com.lbryquest.lbryquest.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;

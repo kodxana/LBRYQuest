@@ -1,8 +1,8 @@
-name: SatoshiQuest
+name: LBRYQuest
 version: 1.1
-author: The SatoshiQuest Open Source Project
-main: com.satoshiquest.satoshiquest.SatoshiQuest
-description: The Minecraft server that runs on Bitcoin
+author: The LBRYQuest Open Source Project
+main: com.lbryquest.lbryquest.LBRYQuest
+description: The Minecraft server that runs on LBRY Credits
 commands:
   addtown:
     description: "Creates a new town in the standing location"

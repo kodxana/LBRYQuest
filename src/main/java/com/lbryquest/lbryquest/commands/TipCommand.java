@@ -1,6 +1,6 @@
-package com.satoshiquest.satoshiquest.commands;
+package com.lbryquest.lbryquest.commands;
 
-import com.satoshiquest.satoshiquest.SatoshiQuest;
+import com.lbryquest.lbryquest.LBRYQuest;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -8,10 +8,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class TipCommand extends CommandAction {
-  private SatoshiQuest satoshiQuest;
+  private LBRYQuest lbryQuest;
 
-  public TipCommand(SatoshiQuest plugin) {
-    satoshiQuest = plugin;
+  public TipCommand(LBRYQuest plugin) {
+    lbryQuest = plugin;
   }
 
   public boolean run(
@@ -27,7 +27,7 @@ if (args[0].equalsIgnoreCase("help") || !(args.length >= 1)) {
 
     //int MAX_SEND = 10000; // to be multiplied by DENOMINATION_FACTOR
     if (args.length == 2) {
-      final Long sat = satoshiQuest.convertCoinToSats(Double.parseDouble(args[0]));
+      final Long sat = lbryQuest.convertCoinToSats(Double.parseDouble(args[0]));
       for (char c : sat.toString().toCharArray()) {
         if (!Character.isDigit(c)) return false;
       }
@@ -46,39 +46,39 @@ if (args[0].equalsIgnoreCase("help") || !(args.length >= 1)) {
               try {
                 
 
-                Long balance = satoshiQuest.getBalance(player.getUniqueId().toString(),1);
+                Long balance = lbryQuest.getBalance(player.getUniqueId().toString(),1);
 
                 if (balance >= sat) {
                   // TODO: Pay to user address
-    		boolean setFee = satoshiQuest.setSatByte(player.getUniqueId().toString(), Double.parseDouble(SatoshiQuest.REDIS.get("txFee" + player.getUniqueId().toString())));
-		  String didSend = satoshiQuest.sendToAddress(player.getUniqueId().toString(),satoshiQuest.REDIS.get("nodeAddress"+onlinePlayer.getUniqueId().toString()), sat);
+    		boolean setFee = lbryQuest.setSatByte(player.getUniqueId().toString(), Double.parseDouble(LBRYQuest.REDIS.get("txFee" + player.getUniqueId().toString())));
+		  String didSend = lbryQuest.sendToAddress(player.getUniqueId().toString(),lbryQuest.REDIS.get("nodeAddress"+onlinePlayer.getUniqueId().toString()), sat);
                   if (didSend != "failed") {
-                    satoshiQuest.updateScoreboard(onlinePlayer);
-                    satoshiQuest.updateScoreboard(player);
+                    lbryQuest.updateScoreboard(onlinePlayer);
+                    lbryQuest.updateScoreboard(player);
                     player.sendMessage(
                         ChatColor.GREEN
                             + "You sent "
                             + ChatColor.LIGHT_PURPLE
-                            + satoshiQuest.globalDecimalFormat.format(satoshiQuest.convertSatsToCoin(sat))
+                            + lbryQuest.globalDecimalFormat.format(lbryQuest.convertSatsToCoin(sat))
                             + " "
-                            + SatoshiQuest.CRYPTO_TICKER
+                            + LBRYQuest.CRYPTO_TICKER
                             + ChatColor.GREEN
                             + " to user "
                             + ChatColor.BLUE
                             + onlinePlayer.getName()
-			    + ChatColor.BLUE + " "+ satoshiQuest.TX_URL + didSend);
+			    + ChatColor.BLUE + " "+ lbryQuest.TX_URL + didSend);
                     onlinePlayer.sendMessage(
                         ChatColor.GREEN
                             + "You got "
                             + ChatColor.LIGHT_PURPLE
-                            + satoshiQuest.globalDecimalFormat.format(satoshiQuest.convertSatsToCoin(sat))
+                            + lbryQuest.globalDecimalFormat.format(lbryQuest.convertSatsToCoin(sat))
                             + " "
-                            + SatoshiQuest.CRYPTO_TICKER
+                            + LBRYQuest.CRYPTO_TICKER
                             + ChatColor.GREEN
                             + " from user "
                             + ChatColor.BLUE
                             + player.getName()
-			    + ChatColor.BLUE + " "+ satoshiQuest.TX_URL + didSend);
+			    + ChatColor.BLUE + " "+ lbryQuest.TX_URL + didSend);
                   } else {
                     player.sendMessage(ChatColor.RED + "Tip failed.");
                   }
@@ -100,7 +100,7 @@ if (args[0].equalsIgnoreCase("help") || !(args.length >= 1)) {
       return false;
     }
 	try {
-	      satoshiQuest.updateScoreboard(player);
+	      lbryQuest.updateScoreboard(player);
 	} catch(Exception e) {
 					e.printStackTrace();
 				}

@@ -1,17 +1,16 @@
-package com.satoshiquest.satoshiquest.commands;
+package com.lbryquest.lbryquest.commands;
 
-import com.satoshiquest.satoshiquest.SatoshiQuest;
-import org.bukkit.Bukkit;
+import com.lbryquest.lbryquest.LBRYQuest;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class WithdrawCommand extends CommandAction {
-  private SatoshiQuest satoshiQuest;
+  private LBRYQuest lbryQuest;
 
-  public WithdrawCommand(SatoshiQuest plugin) {
-    satoshiQuest = plugin;
+  public WithdrawCommand(LBRYQuest plugin) {
+    lbryQuest = plugin;
   }
 
   public boolean run(
@@ -25,7 +24,7 @@ if (args[0].equalsIgnoreCase("help") || !(args.length >= 1)) {
       player.sendMessage(ChatColor.GREEN + "/withdraw <amount> <address> - withdraw is used for External transactions to an address.");
     }
     if (args.length == 2) {
-      final Long sat = satoshiQuest.convertCoinToSats(Double.parseDouble(args[0]));
+      final Long sat = lbryQuest.convertCoinToSats(Double.parseDouble(args[0]));
       for (char c : sat.toString().toCharArray()) {
         if (!Character.isDigit(c)) return false;
       }
@@ -42,26 +41,26 @@ if (args[0].equalsIgnoreCase("help") || !(args.length >= 1)) {
             if (!args[1].equalsIgnoreCase(player.getDisplayName())) {
               try {
 
-                Long balance = satoshiQuest.getBalance(player.getUniqueId().toString(),1);
+                Long balance = lbryQuest.getBalance(player.getUniqueId().toString(),1);
 
                 if (balance >= sat) {
                   // TODO: Pay to user address
-    		boolean setFee = satoshiQuest.setSatByte(player.getUniqueId().toString(), Double.parseDouble(SatoshiQuest.REDIS.get("txFee" + player.getUniqueId().toString())));
-		  String didSend = satoshiQuest.sendToAddress(player.getUniqueId().toString(),args[1].toString(), sat);
+    		boolean setFee = lbryQuest.setSatByte(player.getUniqueId().toString(), Double.parseDouble(LBRYQuest.REDIS.get("txFee" + player.getUniqueId().toString())));
+		  String didSend = lbryQuest.sendToAddress(player.getUniqueId().toString(),args[1].toString(), sat);
                   if (didSend != "failed") {
-                    satoshiQuest.updateScoreboard(player);
+                    lbryQuest.updateScoreboard(player);
                     player.sendMessage(
                         ChatColor.GREEN
                             + "Your withdraw "
                             + ChatColor.LIGHT_PURPLE
-                            + satoshiQuest.globalDecimalFormat.format(satoshiQuest.convertSatsToCoin(sat))
+                            + lbryQuest.globalDecimalFormat.format(lbryQuest.convertSatsToCoin(sat))
                             + " "
-                            + SatoshiQuest.CRYPTO_TICKER
+                            + LBRYQuest.CRYPTO_TICKER
                             + ChatColor.GREEN
                             + " to address "
                             + ChatColor.YELLOW
                             + args[1].toString()
-			    + ChatColor.BLUE + " "+ satoshiQuest.TX_URL + didSend);
+			    + ChatColor.BLUE + " "+ lbryQuest.TX_URL + didSend);
                   } else {
                     player.sendMessage(ChatColor.RED + "withdraw failed.");
                   }
@@ -81,7 +80,7 @@ if (args[0].equalsIgnoreCase("help") || !(args.length >= 1)) {
       return false;
     }
 	try {
-	      satoshiQuest.updateScoreboard(player);
+	      lbryQuest.updateScoreboard(player);
 	} catch(Exception e) {
 					e.printStackTrace();
 				}

@@ -5,9 +5,9 @@
 # 1x google java format download error
 # 10 fail google java format download
 # 2x formating error
-# 20 fail src/.../satoshiquest/ format
-# 21 fail src/.../satoshiquest/commands/ format
-# 22 fail src/.../satoshiquest/events/ format
+# 20 fail src/.../lbryquest/ format
+# 21 fail src/.../lbryquest/commands/ format
+# 22 fail src/.../lbryquest/events/ format
 
 #Setting pwd to our path
 DIR=$0
@@ -25,23 +25,23 @@ else
   fi
 fi
 
-# google java format need to be executed with pwd satoshiquest/ or it will change import in a way to create compilation error.
+# google java format need to be executed with pwd lbryquest/ or it will change import in a way to create compilation error.
 chmod u+x google-java-format-1.5-all-deps.jar
 
-java -jar google-java-format-1.5-all-deps.jar -r src/main/java/com/satoshiquest/satoshiquest/*.java
+java -jar google-java-format-1.5-all-deps.jar -r src/main/java/com/lbryquest/lbryquest/*.java
 if [ $? != 0 ] ; then
   exit 20
 fi
-java -jar google-java-format-1.5-all-deps.jar -r src/main/java/com/satoshiquest/satoshiquest/commands/*.java
+java -jar google-java-format-1.5-all-deps.jar -r src/main/java/com/lbryquest/lbryquest/commands/*.java
 if [ $? != 0 ] ; then
   exit 21
 fi
-java -jar google-java-format-1.5-all-deps.jar -r src/main/java/com/satoshiquest/satoshiquest/events/*.java
+java -jar google-java-format-1.5-all-deps.jar -r src/main/java/com/lbryquest/lbryquest/events/*.java
 if [ $? != 0 ] ; then
   exit 22
 fi
 
-# google java format need to be executed with pwd satoshiquest/ or it will change import in a way to create compilation error.
+# google java format need to be executed with pwd lbryquest/ or it will change import in a way to create compilation error.
 chmod u-x google-java-format-1.5-all-deps.jar
 
 exit 0

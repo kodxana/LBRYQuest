@@ -4,14 +4,14 @@
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <!--Compilation config-->
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.satoshiquest.satoshiquest</groupId>
-    <artifactId>SatoshiQuest</artifactId>
+    <groupId>com.lbryquest.lbryquest</groupId>
+    <artifactId>LBRYQuest</artifactId>
     <packaging>jar</packaging>
-    <!--Version of satoshiQuest-->
+    <!--Version of lbryQuest-->
     <version>2.0</version>
     <!--Package information-->
-    <name>SatoshiQuest</name>
-    <url>http://satoshiquest.co</url>
+    <name>LBRYQuest</name>
+    <url>http://lbryquest.co</url>
     <!--Other config-->
     <repositories>
         <!--Spigot API-->
@@ -31,14 +31,14 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.0.0</version>
                 <configuration>
-                    <finalName>SatoshiQuest</finalName>
+                    <finalName>LBRYQuest</finalName>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
                     <appendAssemblyId>false</appendAssemblyId>
                     <archive>
                         <manifest>
-                            <mainClass>com.satoshiquest.satoshiquest</mainClass>
+                            <mainClass>com.lbryquest.lbryquest</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

@@ -1,17 +1,17 @@
-find . -type f -name "*" -exec sed -i'' -e 's/satoshiquest/changeme/g' {} +
-find . -type f -name "*" -exec sed -i'' -e 's/SatoshiQuest/ChangeMe/g' {} +
-find . -type f -name "*" -exec sed -i'' -e 's/Satoshiquest/Changeme/g' {} +
-find . -type f -name "*" -exec sed -i'' -e 's/satoshiQuest/changeMe/g' {} +
-find . -type f -name "*" -exec sed -i'' -e 's/SATOSHIQUEST/CHANGEME/g' {} +
+find . -type f -name "*" -exec sed -i'' -e 's/lbryquest/lbryquest/g' {} +
+find . -type f -name "*" -exec sed -i'' -e 's/LBRYQuest/LBRYQuest/g' {} +
+find . -type f -name "*" -exec sed -i'' -e 's/LBRYquest/LBRYquest/g' {} +
+find . -type f -name "*" -exec sed -i'' -e 's/lbryQuest/lbryQuest/g' {} +
+find . -type f -name "*" -exec sed -i'' -e 's/LBRYQUEST/LBRYQUEST/g' {} +
 shopt -s globstar
-find . * | rename 's/satoshiquest/changeme/g'
+find . * | rename 's/lbryquest/lbryquest/g'
 shopt -s globstar
-find . * | rename 's/satoshiquest/changeme/g'
+find . * | rename 's/lbryquest/lbryquest/g'
 shopt -s globstar
-find . * | rename 's/SatoshiQuest/ChangeMe/g'
+find . * | rename 's/LBRYQuest/LBRYQuest/g'
 shopt -s globstar
-find . * | rename 's/Satoshiquest/Changeme/g'
+find . * | rename 's/LBRYquest/LBRYquest/g'
 shopt -s globstar
-find . * | rename 's/satoshiQuest/changeMe/g'
+find . * | rename 's/lbryQuest/lbryQuest/g'
 shopt -s globstar
-find . * | rename 's/SATOSHIQUEST/CHANGEME/g'
+find . * | rename 's/LBRYQUEST/LBRYQUEST/g'

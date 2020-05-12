@@ -1,6 +1,6 @@
-package com.satoshiquest.satoshiquest.commands;
+package com.lbryquest.lbryquest.commands;
 
-import com.satoshiquest.satoshiquest.SatoshiQuest;
+import com.lbryquest.lbryquest.LBRYQuest;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -11,9 +11,9 @@ public class UnbanCommand extends CommandAction {
       CommandSender sender, Command cmd, String label, String[] args, Player player) {
     if (args.length == 1) {
       String playerName = args[0];
-      if (SatoshiQuest.REDIS.exists("uuid:" + playerName)) {
-        String uuid = SatoshiQuest.REDIS.get("uuid:" + playerName);
-        SatoshiQuest.REDIS.srem("banlist", uuid);
+      if (LBRYQuest.REDIS.exists("uuid:" + playerName)) {
+        String uuid = LBRYQuest.REDIS.get("uuid:" + playerName);
+        LBRYQuest.REDIS.srem("banlist", uuid);
         sender.sendMessage(
             ChatColor.GREEN
                 + "Player "

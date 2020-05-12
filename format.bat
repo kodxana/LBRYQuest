@@ -14,7 +14,7 @@ if exist google-java-format-1.5-all-deps.jar (
     echo If you got an error please download and place it here http://github.com/google/google-java-format/releases/download/google-java-format-1.5/google-java-format-1.5-all-deps.jar manualy
 )
 
-java -jar google-java-format-1.5-all-deps.jar -r src/main/java/com/satoshiquest/satoshiquest/*
-java -jar google-java-format-1.5-all-deps.jar -r src/main/java/com/satoshiquest/satoshiquest/commands/*
-java -jar google-java-format-1.5-all-deps.jar -r src/main/java/com/satoshiquest/satoshiquest/events/*
+java -jar google-java-format-1.5-all-deps.jar -r src/main/java/com/lbryquest/lbryquest/*
+java -jar google-java-format-1.5-all-deps.jar -r src/main/java/com/lbryquest/lbryquest/commands/*
+java -jar google-java-format-1.5-all-deps.jar -r src/main/java/com/lbryquest/lbryquest/events/*
 exit /b 0
