@@ -20,8 +20,40 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f36ed4d7-d845-4a37-8f8a-924d013a0068" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/renameScript.sh" beforeDir="false" afterPath="$PROJECT_DIR$/renameScript.sh" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/bin/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/bin/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/bin/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/satoshiquest/satoshiquest/NodeWallet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lbryquest/lbryquest/NodeWallet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/satoshiquest/satoshiquest/SatoshiQuest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lbryquest/lbryquest/LBRYQuest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/satoshiquest/satoshiquest/commands/BanCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lbryquest/lbryquest/commands/BanCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/satoshiquest/satoshiquest/commands/BanlistCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lbryquest/lbryquest/commands/BanlistCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/satoshiquest/satoshiquest/commands/CommandAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lbryquest/lbryquest/commands/CommandAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/satoshiquest/satoshiquest/commands/CrashtestCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lbryquest/lbryquest/commands/CrashtestCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/satoshiquest/satoshiquest/commands/EmergencystopCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lbryquest/lbryquest/commands/EmergencystopCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/satoshiquest/satoshiquest/commands/FixLeaderBoardCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lbryquest/lbryquest/commands/FixLeaderBoardCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/satoshiquest/satoshiquest/commands/LeaderBoardCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lbryquest/lbryquest/commands/LeaderBoardCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/satoshiquest/satoshiquest/commands/LivesCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lbryquest/lbryquest/commands/LivesCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/satoshiquest/satoshiquest/commands/MOTDCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lbryquest/lbryquest/commands/MOTDCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/satoshiquest/satoshiquest/commands/ModCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lbryquest/lbryquest/commands/ModCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/satoshiquest/satoshiquest/commands/ResetCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lbryquest/lbryquest/commands/ResetCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/satoshiquest/satoshiquest/commands/SetFeeCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lbryquest/lbryquest/commands/SetFeeCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/satoshiquest/satoshiquest/commands/SetLivesCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lbryquest/lbryquest/commands/SetLivesCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/satoshiquest/satoshiquest/commands/SpectateCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lbryquest/lbryquest/commands/SpectateCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/satoshiquest/satoshiquest/commands/TipCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lbryquest/lbryquest/commands/TipCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/satoshiquest/satoshiquest/commands/UnbanCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lbryquest/lbryquest/commands/UnbanCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/satoshiquest/satoshiquest/commands/VoteCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lbryquest/lbryquest/commands/VoteCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/satoshiquest/satoshiquest/commands/WalletCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lbryquest/lbryquest/commands/WalletCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/satoshiquest/satoshiquest/commands/WithdrawCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lbryquest/lbryquest/commands/WithdrawCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/satoshiquest/satoshiquest/events/EntityEvents.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lbryquest/lbryquest/events/EntityEvents.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/satoshiquest/satoshiquest/events/ServerEvents.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lbryquest/lbryquest/events/ServerEvents.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
+>>>>>>> master
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,6 +64,7 @@
     <option name="testRunner" value="GRADLE" />
     <option name="delegatedBuild" value="true" />
   </component>
+<<<<<<< HEAD
   <component name="FindInProjectRecents">
     <findStrings>
       <find>blockchai</find>
@@ -39,6 +72,8 @@
       <find>listwallets</find>
     </findStrings>
   </component>
+=======
+>>>>>>> master
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -85,6 +120,7 @@
       </list>
     </option>
   </component>
+<<<<<<< HEAD
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="32" />
     <option name="y" value="115" />
@@ -92,6 +128,9 @@
     <option name="height" value="1272" />
   </component>
   <component name="ProjectId" id="1bnmFopWV8rM6VMo7dSXTFzimGV" />
+=======
+  <component name="ProjectId" id="1bLU44BHRnYDwSavZnZ59t3ACNy" />
+>>>>>>> master
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -102,6 +141,20 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+<<<<<<< HEAD
+=======
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="" />
+    </key>
+>>>>>>> master
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -113,8 +166,13 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1573704948587</updated>
+<<<<<<< HEAD
       <workItem from="1589276135553" duration="187000" />
       <workItem from="1589276333727" duration="1144000" />
+=======
+      <workItem from="1588410674195" duration="17661000" />
+      <workItem from="1588433692444" duration="1199000" />
+>>>>>>> master
     </task>
     <servers />
   </component>
@@ -132,5 +190,23 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+<<<<<<< HEAD
+=======
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="2011" y="1257" width="441" height="189" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages" timestamp="1588410882151">
+      <screen x="0" y="27" width="3840" height="2133" />
+    </state>
+    <state x="2011" y="1257" width="441" height="189" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages/0.27.3840.2133/3840.0.1920.1080@0.27.3840.2133" timestamp="1588410882151" />
+    <state x="0" y="27" width="3029" height="2133" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1588410964491">
+      <screen x="0" y="27" width="3840" height="2133" />
+    </state>
+    <state x="0" y="27" width="3029" height="2133" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.27.3840.2133/3840.0.1920.1080@0.27.3840.2133" timestamp="1588410964491" />
+    <state x="1629" y="837" width="1235" height="763" key="find.popup" timestamp="1588433804366">
+      <screen x="0" y="27" width="3840" height="2133" />
+    </state>
+    <state x="1629" y="837" width="1235" height="763" key="find.popup/0.27.3840.2133/3840.0.1920.1080@0.27.3840.2133" timestamp="1588433804366" />
+    <state x="4219" y="168" width="987" height="754" key="find.popup/0.27.3840.2133/3840.0.1920.1080@3840.0.1920.1080" timestamp="1588430227596" />
+>>>>>>> master
   </component>
 </project>
