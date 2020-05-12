@@ -50,3 +50,13 @@ sudo iptables -t nat -A POSTROUTING --source 172.17.0.3 --destination 172.17.0.3
 
 ----------------------
 
+How to run without docker
+=========================================
+1. Download [Spigot 1.13.2](https://getbukkit.org/get/QMerkBxNGNl3EnQl8gACGfWuJnJtJuWB)
+2. Start server with ```java -jar Spigot-1.13.2.jar```
+3. Copy LBRYQuest.jar to plugin folder
+4. Set EULA.txt to true
+5. Edit and run setenv.sh script
+6. Make sure you have LBRYcrd and Redsi server running.
+7. Edit server.properties to point to your local IP
+8. Start server with ```java -jar Spigot-1.13.2.jar```
