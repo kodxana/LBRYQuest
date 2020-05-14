@@ -44,9 +44,9 @@ player.sendMessage(ChatColor.GREEN + "Your Deposit address on this server: " + l
 String url = lbryQuest.ADDRESS_URL + lbryQuest.REDIS.get("nodeAddress"+ player.getUniqueId().toString());
       player.sendMessage(ChatColor.WHITE + "" + ChatColor.UNDERLINE + url);
       //Long balance1 = lbryQuest.getBalance(player.getUniqueId().toString(),1);
-      Double playerCoinBalance1 = ((Double)(BigDecimal.valueOf(lbryQuest.getBalance(player.getUniqueId().toString(),1)).doubleValue() * lbryQuest.baseSat));
+     //Double playerCoinBalance1 = ((Double)(BigDecimal.valueOf(lbryQuest.getBalance(player.getUniqueId().toString(),1)).doubleValue() * lbryQuest.baseSat));
       //Long balance6 = lbryQuest.getBalance(player.getUniqueId().toString(),6);
-      Double playerCoinBalance6 = (Double)(BigDecimal.valueOf(lbryQuest.getBalance(player.getUniqueId().toString(),6)).doubleValue() * lbryQuest.baseSat);
+		Double playerCoinBalance6 = (Double)(BigDecimal.valueOf(lbryQuest.getBalance(player.getUniqueId().toString(),lbryQuest.CONFS_TARGET)).doubleValue() * lbryQuest.baseSat);
       
       
       //Long unconfirmedBalance = lbryQuest.getUnconfirmedBalance(player.getUniqueId().toString());
@@ -56,13 +56,13 @@ String url = lbryQuest.ADDRESS_URL + lbryQuest.REDIS.get("nodeAddress"+ player.g
 
 
 
-      player.sendMessage(ChatColor.GREEN + "wallet balance with 6-conf+: " + lbryQuest.globalDecimalFormat.format(playerCoinBalance6));
-      player.sendMessage(ChatColor.GREEN + "wallet balance with 1-conf+: " + lbryQuest.globalDecimalFormat.format(playerCoinBalance1));
+		player.sendMessage(ChatColor.GREEN + "wallet balance with "+lbryQuest.CONFS_TARGET+"-conf+: " + lbryQuest.globalDecimalFormat.format(playerCoinBalance6));
+		//player.sendMessage(ChatColor.GREEN + "wallet balance with 1-conf+: " + satoshiQuest.globalDecimalFormat.format(playerCoinBalance1));
       player.sendMessage(ChatColor.DARK_GREEN + "wallet unconfirmed: " + lbryQuest.globalDecimalFormat.format(playerCoinBalanceUnconfirmed));
 	if (LBRYQuest.REDIS.exists("txFee" + player.getUniqueId().toString())) {
 		player.sendMessage(ChatColor.GREEN + "player fee is set to " + LBRYQuest.REDIS.get("txFee" + player.getUniqueId().toString()) + ""+ lbryQuest.DENOMINATION_NAME +"/byte.");
 	}
-			DecimalFormat df = new DecimalFormat("0.00");
+		DecimalFormat df = new DecimalFormat(LBRYQuest.USD_DECIMALS); df = new DecimalFormat("0.00");
 	        	//System.out.print(df.format(exRate));
 	player.sendMessage(ChatColor.GREEN + "1 " + lbryQuest.COINGECKO_CRYPTO + " = $" + df.format(lbryQuest.exRate));
 	if (lbryQuest.REDIS.exists("ExternalAddress" +player.getUniqueId().toString())) {

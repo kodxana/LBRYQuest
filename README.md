@@ -37,6 +37,8 @@ An example configuration would be:
     - DISCORD_HOOK_URL
     - ADMIN_ADDRESS
     - ADMIN2_ADDRESS
+    - USD_DECIMALS=0.000
+    - CONFS_TARGET=1
 ```
 
 3. run docker-compose up

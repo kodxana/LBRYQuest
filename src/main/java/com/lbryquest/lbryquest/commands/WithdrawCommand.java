@@ -16,19 +16,19 @@ public class WithdrawCommand extends CommandAction {
   public boolean run(
       CommandSender sender, Command cmd, String label, String[] args, final Player player) {
 try {
-if (args[0].equalsIgnoreCase("help") || !(args.length >= 1)) {
-	      player.sendMessage(ChatColor.GREEN + "/withdraw <amount> <address> - withdraw is used for External transactions to an address.");
+  if (args[1].equalsIgnoreCase("help") || !(args.length >= 1)) {
+    player.sendMessage(ChatColor.GREEN + "/withdraw <address> <amount> - withdraw is used for External transactions to an address.");
 	}
 } catch (Exception e) {
       //e.printStackTrace();
-      player.sendMessage(ChatColor.GREEN + "/withdraw <amount> <address> - withdraw is used for External transactions to an address.");
+  player.sendMessage(ChatColor.GREEN + "/withdraw <address> <amount> - withdraw is used for External transactions to an address.");
     }
     if (args.length == 2) {
-      final Long sat = lbryQuest.convertCoinToSats(Double.parseDouble(args[0]));
+      final Long sat = lbryQuest.convertCoinToSats(Double.parseDouble(args[1]));
       for (char c : sat.toString().toCharArray()) {
         if (!Character.isDigit(c)) return false;
       }
-      if (args[0].length() > 10) {
+      if (args[1].length() > 10) {
         // maximum send is 10 digits
         return false;
       }
@@ -38,15 +38,15 @@ if (args[0].equalsIgnoreCase("help") || !(args.length >= 1)) {
       if (sat != 0) {
 
 
-            if (!args[1].equalsIgnoreCase(player.getDisplayName())) {
+        if (!args[0].equalsIgnoreCase(player.getDisplayName())) {
               try {
 
-                Long balance = lbryQuest.getBalance(player.getUniqueId().toString(),1);
+                Long balance = lbryQuest.getBalance(player.getUniqueId().toString(),lbryQuest.CONFS_TARGET);
 
                 if (balance >= sat) {
                   // TODO: Pay to user address
     		boolean setFee = lbryQuest.setSatByte(player.getUniqueId().toString(), Double.parseDouble(LBRYQuest.REDIS.get("txFee" + player.getUniqueId().toString())));
-		  String didSend = lbryQuest.sendToAddress(player.getUniqueId().toString(),args[1].toString(), sat);
+                  String didSend = lbryQuest.sendToAddress(player.getUniqueId().toString(),args[0].toString(), sat);
                   if (didSend != "failed") {
                     lbryQuest.updateScoreboard(player);
                     player.sendMessage(
@@ -59,7 +59,7 @@ if (args[0].equalsIgnoreCase("help") || !(args.length >= 1)) {
                             + ChatColor.GREEN
                             + " to address "
                             + ChatColor.YELLOW
-                            + args[1].toString()
+                            + args[0].toString()
 			    + ChatColor.BLUE + " "+ lbryQuest.TX_URL + didSend);
                   } else {
                     player.sendMessage(ChatColor.RED + "withdraw failed.");

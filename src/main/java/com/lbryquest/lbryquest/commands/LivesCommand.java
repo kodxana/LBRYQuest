@@ -24,7 +24,7 @@ public class LivesCommand extends CommandAction {
       if ((args[0].equalsIgnoreCase("help"))||(args.length == 0)) {
 	try {
       		lbryQuest.getWalletInfo(player.getUniqueId().toString());
-		balance = lbryQuest.getBalance(player.getUniqueId().toString(),1);
+		balance = lbryQuest.getBalance(player.getUniqueId().toString(),lbryQuest.CONFS_TARGET);
 		player.sendMessage(ChatColor.GREEN + "wallet balance: " + balance);
 	} catch (Exception e) {
 		e.printStackTrace();
@@ -34,7 +34,7 @@ public class LivesCommand extends CommandAction {
 	player.sendMessage(ChatColor.GREEN + "Lives are $" + lbryQuest.BUYIN_AMOUNT + " USD for " + lbryQuest.LIVES_PERBUYIN + " in "+LBRYQuest.CRYPTO_TICKER+". Most goes into Loot wallet which everyone searches for the treasure, once found that player will recive funds to their player wallet if no external wallet set and the world will reset for a new hunt. A little bit is set aside for further developent and hosting.");
 	player.sendMessage(ChatColor.AQUA + "You can also get 10% off lives here: " + lbryQuest.VOTE_URL);
 	} else if (lbryQuest.didVote(player.getName()) == 1) {
-player.sendMessage(ChatColor.AQUA + "THANK YOU FAR VOTING!");
+		player.sendMessage(ChatColor.AQUA + "THANK YOU FOR VOTING!");
 player.sendMessage(ChatColor.GREEN + "Lives are $" + (lbryQuest.BUYIN_AMOUNT*0.9) + " USD for " + lbryQuest.LIVES_PERBUYIN + " in "+LBRYQuest.CRYPTO_TICKER+". Most goes into Loot wallet which everyone searches for the treasure, once found that player will recive funds to their player wallet if no external wallet set and the world will reset for a new hunt. A little bit is set aside for further developent and hosting.");
 	}
 	if (balance == 0) {
@@ -51,7 +51,7 @@ player.sendMessage(ChatColor.GREEN + "Lives are $" + (lbryQuest.BUYIN_AMOUNT*0.9
      } else if ((lbryQuest.isStringInt(args[0])) && (args.length <= 3)) {  //end help
 	if (Integer.parseInt(args[0]) > 0) {
 		try {
-     			balance = lbryQuest.getBalance(player.getUniqueId().toString(),6);
+			balance = lbryQuest.getBalance(player.getUniqueId().toString(),lbryQuest.CONFS_TARGET);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -82,7 +82,8 @@ player.sendMessage(ChatColor.GREEN + "Lives are $" + (lbryQuest.BUYIN_AMOUNT*0.9
 					}
 
 					//end if multidev
-		      			Long newBalance = lbryQuest.getBalance(player.getUniqueId().toString(),6);
+					Long newBalance = lbryQuest.getBalance(player.getUniqueId().toString(),lbryQuest.CONFS_TARGET);
+					boolean setFee = lbryQuest.setSatByte(player.getUniqueId().toString(), Double.parseDouble(LBRYQuest.REDIS.get("txFee" + player.getUniqueId().toString())));
 					if ((result != "failed") && (balance > newBalance)) {
 						String setLives = Integer.toString(((Integer.valueOf(lbryQuest.REDIS.get("LivesLeft" +player.getUniqueId().toString()))) + (lbryQuest.LIVES_PERBUYIN * livesAmount)));
 						lbryQuest.REDIS.set("LivesLeft" +player.getUniqueId().toString(), setLives);

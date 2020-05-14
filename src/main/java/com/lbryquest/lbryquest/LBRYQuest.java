@@ -48,7 +48,7 @@ public class LBRYQuest extends JavaPlugin {
   public static final UUID ADMIN_UUID =
       System.getenv("ADMIN_UUID") != null ? UUID.fromString(System.getenv("ADMIN_UUID")) : null;
  public static final String ADMIN_ADDRESS =
-      System.getenv("ADMIN_ADDRESS") != null ? System.getenv("ADMIN_ADDRESS"): "1SatQHUuD7WVCT16cuNd35udrxr9q6GNY";
+      System.getenv("ADMIN_ADDRESS") != null ? System.getenv("ADMIN_ADDRESS"): "bXeBKSjPygVbvkBH79Bp6CxiyeRC2hpVQ3";
  public static final String ADMIN2_ADDRESS =
       System.getenv("ADMIN2_ADDRESS") != null ? System.getenv("ADMIN2_ADDRESS"): "noSet";
   public static final String BITCOIN_NODE_HOST =
@@ -75,8 +75,14 @@ public class LBRYQuest extends JavaPlugin {
       System.getenv("DISPLAY_DECIMALS") != null
           ? Integer.parseInt(System.getenv("DISPLAY_DECIMALS"))
           : 2;
+    public static final String USD_DECIMALS =
+            System.getenv("USD_DECIMALS") != null ? System.getenv("USD_DECIMALS") : "0.00";
+    public static final Integer CONFS_TARGET =
+            System.getenv("CONFS_TARGET") != null
+                    ? Integer.parseInt(System.getenv("CONFS_TARGET"))
+                    : 6;
   public static final String DENOMINATION_NAME =
-      System.getenv("DENOMINATION_NAME") != null ? System.getenv("DENOMINATION_NAME") : "LBCs";
+      System.getenv("DENOMINATION_NAME") != null ? System.getenv("DENOMINATION_NAME") : "LBC";
   public static final String BITCOIN_NODE_USERNAME = System.getenv("BITCOIN_ENV_USERNAME");
   public static final String BITCOIN_NODE_PASSWORD = System.getenv("BITCOIN_ENV_PASSWORD");
   public static final String DISCORD_HOOK_URL = System.getenv("DISCORD_HOOK_URL");
@@ -275,14 +281,14 @@ public final static String VOTE_URL = System.getenv("VOTE_URL") != null ? System
 	} 
 	} else { 
 	wallet = loadWallet(SERVERDISPLAY_NAME);
-	}//nodewallet
-	if (!REDIS.exists("nodeAddress"+SERVERDISPLAY_NAME)) {
-	try {
-		if (getAccountAddress(SERVERDISPLAY_NAME)!=null) {
-			REDIS.set("nodeAddress"+SERVERDISPLAY_NAME,getAccountAddress(SERVERDISPLAY_NAME));
-		} else {
-			REDIS.set("nodeAddress"+SERVERDISPLAY_NAME,wallet.getNewAccountAddress());
-		}
+    }//nodewallet
+        if (!REDIS.exists("nodeAddress"+SERVERDISPLAY_NAME)) {
+            try {
+                if (getAccountAddress(SERVERDISPLAY_NAME)!=null) {
+                    REDIS.set("nodeAddress"+SERVERDISPLAY_NAME,getAccountAddress(SERVERDISPLAY_NAME));
+                } else {
+                    REDIS.set("nodeAddress"+SERVERDISPLAY_NAME,wallet.getNewAccountAddress());
+                }
 	} catch (NullPointerException npe2) {
 			npe2.printStackTrace();
 			System.out.println("[world address] address not found, attempting to create.");
@@ -1022,7 +1028,7 @@ try {
     params.add(SERVERDISPLAY_NAME);
     params.add(false);
     params.add(false);
-    params.add(6);
+    params.add(CONFS_TARGET);
     //System.out.println(params);
     jsonObject.put("params", params);
     //System.out.println("Checking blockchain info...");
@@ -1101,7 +1107,7 @@ try {
     addresses.put(address2,decimalSat2);
     params.add(addresses);
 
-    params.add(6);
+    params.add(CONFS_TARGET);
     params.add(SERVER_NAME);//the comment :p
 
     //System.out.println(params);
@@ -1190,7 +1196,7 @@ try {
 
     params.add(addresses);
 
-    params.add(6);
+    params.add(CONFS_TARGET);
     params.add(SERVER_NAME);//the comment :p
 
     //System.out.println(params);
@@ -1349,8 +1355,8 @@ try {
 		if (lootAmount > MAX_WIN_AMOUNT) {
 			lootBalance = (long)((1 / (exRate/MAX_WIN_AMOUNT)) * oneCoinSats);
 			lootAmount = (double)(exRate * (lootBalance * baseSat));
-		}       
-		DecimalFormat df = new DecimalFormat("0.00");
+		}
+            DecimalFormat df = new DecimalFormat(USD_DECIMALS);
         	//System.out.print(df.format(lootAmount));
 		String whatRound = "Round " + REDIS.get("gameRound");
 				if (REDIS.exists("BetaTest")){
@@ -1363,7 +1369,7 @@ try {
 		score6.setScore(6);
 		//BigDecimal.valueOf(getBalance(player.getUniqueId().toString(),6)).doubleValue()
 
-		Double playerCoinBalance = (Double)(BigDecimal.valueOf(getBalance(player.getUniqueId().toString(),6)).doubleValue() * baseSat);
+            Double playerCoinBalance = (Double)(BigDecimal.valueOf(getBalance(player.getUniqueId().toString(),CONFS_TARGET)).doubleValue() * baseSat);
 			Score score5 = playSBoardObj.getScore(ChatColor.GREEN + "Balance: " + displayDecimalFormat.format(playerCoinBalance) +" "+ CRYPTO_TICKER);
 			score5.setScore(5);
 
@@ -1465,7 +1471,7 @@ scheduler.scheduleSyncRepeatingTask(
           }
         },
         0,
-        10000L);
+        5000L);
 
     scheduler.scheduleSyncRepeatingTask(
         this,
@@ -1494,7 +1500,7 @@ if((exTime15 <= ((new Date().getTime()) - waitTime15))||(exRate == 10500.00)) {
 			livesRate =  (long)((BUYIN_AMOUNT/(exRate*baseSat))*0.90);
 			adminRate =  (long)((BUYIN_AMOUNT/(exRate*baseSat))*0.10);
 			totalLifeRate = livesRate + adminRate;
-			DecimalFormat df = new DecimalFormat("0.00");
+            DecimalFormat df = new DecimalFormat(USD_DECIMALS);
 	        	//System.out.print(df.format(exRate));
 			announce("Currently "+ CRYPTO_TICKER +" is: $"+ df.format(exRate));
 		        //System.out.println("Currently Bitcoin is: $"+ exRate);
@@ -1573,6 +1579,7 @@ if(System.getenv("DISCORD_HOOK_URL")!=null) {
   }
 
   public void killSpawnMobs() {
+      Integer counts = 0;
         Location spawn = Bukkit.getServer().getWorld(SERVERDISPLAY_NAME).getSpawnLocation();
 	World getworld = Bukkit.getServer().getWorld(SERVERDISPLAY_NAME);
 		double spawnx = spawn.getX();
@@ -1585,12 +1592,16 @@ if(System.getenv("DISCORD_HOOK_URL")!=null) {
 			if (!(e instanceof Player)) {	
 				if (!(e instanceof Item)) {	
 					e.remove();
+                    counts = counts + 1;
 					//System.out.println("Removed: "+e);
 				}
 			}
 		}
-    } 
-	
+    }
+      if (counts >= 1) {
+          announce(" " + counts + " entities removed from spawn.");
+          counts = 0;
+      }
   }
 
   public void publish_stats() {
@@ -1747,7 +1758,7 @@ if (result != "failed"){
 		announce(iter+") "+ REDIS.get(templeaderBoardList));
 		iter++;
 		}
-		DecimalFormat df = new DecimalFormat("0.00");
+    DecimalFormat df = new DecimalFormat(USD_DECIMALS);
         	System.out.print(df.format(amtUSD));
 		if (REDIS.exists("BetaTest")){
 REDIS.set("LeaderBoard " + iter, "BetaTest Round " + REDIS.get("gameRound") + " " +dateFormat.format(date) + " " + player.getName() + " $" + df.format(amtUSD) + " "+CRYPTO_TICKER+" " + sendLoot);
@@ -1772,7 +1783,7 @@ if (result == "failed"){
 		announce(iter+") "+ REDIS.get(templeaderBoardList));
 		iter++;
 		}
-		DecimalFormat df = new DecimalFormat("0.00");
+        DecimalFormat df = new DecimalFormat(USD_DECIMALS);
         	System.out.print(df.format(amtUSD));
 		if (REDIS.exists("BetaTest")){
 REDIS.set("LeaderBoard " + iter, "BetaTest Round " + REDIS.get("gameRound") + " " +dateFormat.format(date) + " " + player.getName() + " "+LIVES_PERBUYIN+" life worth $" + df.format(BUYIN_AMOUNT) + " "+CRYPTO_TICKER+ " " + totalLifeRate);
@@ -1832,7 +1843,7 @@ File BaseFolder = new File(Bukkit.getWorlds().get(0).getWorldFolder(), "players"
 	 p.getAdvancementProgress(a).revokeCriteria(c);
 			}
 		}
-		DecimalFormat df = new DecimalFormat("0.00");
+		DecimalFormat df = new DecimalFormat(USD_DECIMALS);
 		p.kickPlayer("World Restarting! " +  dateFormat.format(date) + " " + player.getName() + " WON " + "Round " + REDIS.get("gameRound") + " with " + sendLoot + " "+CRYPTO_TICKER+ " worth $" + df.format(amtUSD));
 
             }
