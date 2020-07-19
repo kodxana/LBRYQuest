@@ -1810,9 +1810,11 @@ File BaseFolder = new File(Bukkit.getWorlds().get(0).getWorldFolder(), "players"
 	    for(OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
 		if (result != "failed"){
 		int tempLivesOfflinePlayer = Integer.parseInt(REDIS.get("LivesLeft" +offlinePlayer.getUniqueId().toString()));
-		if (tempLivesOfflinePlayer >= 1) {
-		REDIS.set("LivesLeft" +offlinePlayer.getUniqueId().toString(), Integer.toString(tempLivesOfflinePlayer-1));
-		}
+		 if ((tempLivesOfflinePlayer <= 0) || (tempLivesOfflinePlayer == (Integer)null)){
+        REDIS.set("LivesLeft" +offlinePlayer.getUniqueId().toString(), "0");
+        } else if (tempLivesOfflinePlayer >= 1) {
+        REDIS.set("LivesLeft" +offlinePlayer.getUniqueId().toString(), Integer.toString(tempLivesOfflinePlayer-1));
+        }
 		if (REDIS.exists("LootAnnounced" +offlinePlayer.getUniqueId().toString())) {
 		REDIS.del("LootAnnounced" +offlinePlayer.getUniqueId().toString());
 		}
